@@ -127,9 +127,6 @@
     </div>
   </header>
 <div class="provider-tabs" style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
-  <button class="btn-tab" data-provider="Pragmatic Play">Pragmatic Play</button>
-  <button class="btn-tab" data-provider="Pocket Game Soft">Pocket Game Soft</button>
-  <button class="btn-tab" data-provider="No Limit City">No Limit City</button>
 </div>
 
 
@@ -161,18 +158,16 @@
   }
 
   function mockFetch(){
-    const providers = ['Pragmatic'];
+    const providers = ['Pragmatic','Pocket Game Soft','No Limit City'];
     const items = [
-      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png',      rtp: 86 },
-      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png',   rtp: 65 },
-      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 90 },
-      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png',    rtp: 78 },
-      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png',         rtp: 80 },
-      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png',     rtp: 55 },
-      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of hades.png',     rtp: 69 }
-    ,
-      { nama: 'Mahjong Ways 2', gambar: 'Gambar RTP/Mahjong Ways 2.png', rtp: 94, provider: 'Pocket Game Soft', volatility: 4 },
-      { nama: 'San Quentin', gambar: 'Gambar RTP/San Quentin.png', rtp: 92, provider: 'No Limit City', volatility: 5 }
+      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png',      rtp: 86, provider: 'Pragmatic' },
+      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png',   rtp: 65, provider: 'Pragmatic' },
+      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 90, provider: 'Pragmatic' },
+      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png',    rtp: 78, provider: 'Pragmatic' },
+      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png',         rtp: 80, provider: 'Pragmatic' },
+      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png',     rtp: 55, provider: 'Pragmatic' },
+      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of hades.png',     rtp: 69, provider: 'Pragmatic' },
+      { nama: 'Mahjong Ways',       gambar: 'Gambar RTP/Mahjong Ways.png',       rtp: 93, provider: 'Pocket Game Soft' }
     ];
 
     const list = items.map((g, i) => ({
@@ -265,3 +260,4 @@
 </script>
 </body>
 </html>
+
