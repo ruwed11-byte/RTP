@@ -148,22 +148,29 @@
 
   // ---- Mock (hapus jika pakai API asli)
   function mockFetch(){
-    const providers = ['Pragmatic'];
-    const items = [
-      'Sweet Bonanza','','Gates of Olympus','Starlight Princess','Sugar Rush 1000',
-      'Aztec Gems','Wild West Gold','Gates of Hades'
-    ];
-    const imgs = (name) => ['Gambar RTP/Gates Of Olympus.png','Gambar RTP/Gates Of Olympus.png','Gambar RTP/Gates Of hades.png','Gambar RTP/Starlight Princess.png','Gambar RTP/Sugar Rush 1000.png','Gambar RTP/Sweet Bonanza.png','Gambar RTP/Wild West Gold.png'];
-      `${encodeURIComponent(name)}/300/300`;
-    const list = items.map((n,i)=>({
-      id:i+1,
-      nama:n,
-      provider: providers[i%providers.length],
-      rtp: Math.floor(50 + Math.random()*45),
-      gambar: imgs(n)
-    }));
-    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(list)}), 600));
-  }
+  const providers = ['Pragmatic'];
+  const items = [
+    { nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png' },
+    { nama: 'Gates Of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png' },
+    { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png' },
+    { nama: 'Sugar Rush 1000', gambar: 'Gambar RTP/Sugar Rush 1000.png' },
+    { nama: 'Aztec Gems', gambar: 'Gambar RTP/Aztec Gems.png' },
+    { nama: 'Wild West Gold', gambar: 'Gambar RTP/Wild West Gold.png' },
+    { nama: 'Gates of Hades', gambar: 'Gambar RTP/Gates of Hades.png' }
+  ];
+
+  const list = items.map((g, i) => ({
+    id: i+1,
+    nama: g.nama,
+    provider: providers[i % providers.length],
+    rtp: Math.floor(50 + Math.random()*45),
+    gambar: encodeURI(g.gambar) // otomatis ubah spasi jadi %20
+  }));
+
+  return new Promise(res =>
+    setTimeout(() => res({ ok:true, json:()=>Promise.resolve(list) }), 600)
+  );
+}
 
   async function fetchRTP(){
     $btn.disabled = true;
@@ -248,5 +255,6 @@
 </script>
 </body>
 </html>
+
 
 
