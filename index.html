@@ -170,13 +170,32 @@
       { nama: 'Mahjong Ways',       gambar: 'Gambar RTP/Mahjong Ways.png',       rtp: 93, provider: 'Pocket Game Soft' }
     ];
 
-    const list = items.map((g, i) => ({
-      id: i+1,
-      nama: g.nama,
-      provider: g.provider,
-      rtp: g.rtp,
-      gambar: encodeURI(g.gambar)
-    }));
+    const list = items.map((g, i) => {
+  let level = 'Hot';
+  let color = 'green';
+
+  if (g.rtp >= 61) {
+    level = 'Hot';
+    color = 'green';
+  } else if (g.rtp >= 41) {
+    level = 'Medium';
+    color = 'yellow';
+  } else if (g.rtp >= 20) {
+    level = 'Low';
+    color = 'red';
+  }
+
+  return {
+    id: i+1,
+    nama: g.nama,
+    provider: g.provider,
+    rtp: g.rtp,
+    gambar: encodeURI(g.gambar),
+    level: level,
+    levelColor: color
+  };
+});
+
 
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(list)}), 600));
   }
@@ -241,7 +260,13 @@
           <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
                onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
           <div class="rtp-badge ${badge}">${d.rtp}%</div>
-          <div class="bar"><span style="width:${Math.max(0,Math.min(d.rtp,100))}%"></span></div>
+          <div class="bar">
+  <span style="
+    width:${Math.max(0,Math.min(d.rtp,100))}%;
+    background-color:${d.rtp >= 61 ? 'green' : d.rtp >= 41 ? 'yellow' : 'red'};
+  "></span>
+</div>
+
           <div class="title">${d.nama}</div>
           <div class="foot">
             <span class="pill">${d.provider || 'Provider'}</span>
@@ -260,4 +285,3 @@
 </script>
 </body>
 </html>
-
