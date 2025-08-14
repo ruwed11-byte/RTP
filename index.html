@@ -120,7 +120,7 @@
 
 <script>
   const USE_MOCK  = true;
-  const REFRESH_MS = 5 * 60 * 1000;
+  const REFRESH_MS = 12 * 60 * 60 * 1000; // 12 jam
 
   const $grid   = document.getElementById('grid');
   const $status = document.getElementById('status');
@@ -145,20 +145,21 @@
   function mockFetch(){
     const providers = ['Pragmatic'];
     const items = [
-      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png' },
-      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png' },
-      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png' },
-      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png' },
-      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png' },
-      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png' },
-      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of hades.png' }
+      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png',      rtp: 86 },
+      { nama: 'Mahjong Wins 3',     gambar: 'Gambar RTP/Mahjong Wins 3.png',     rtp: 72 },
+      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png',   rtp: 65 },
+      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 90 },
+      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png',    rtp: 78 },
+      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png',         rtp: 80 },
+      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png',     rtp: 55 },
+      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of Hades.png',     rtp: 69 }
     ];
 
     const list = items.map((g, i) => ({
       id: i+1,
       nama: g.nama,
       provider: providers[i % providers.length],
-      rtp: Math.floor(50 + Math.random()*45),
+      rtp: g.rtp,
       gambar: encodeURI(g.gambar)
     }));
 
@@ -244,4 +245,3 @@
 </script>
 </body>
 </html>
-
