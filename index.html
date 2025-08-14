@@ -94,9 +94,9 @@
           <input id="search" type="search" placeholder="Cari game…" />
           <select id="range">
             <option value="all">Semua RTP</option>
-            <option value="80-100">80–100%</option>
-            <option value="60-79">60–79%</option>
-            <option value="0-59">0–59%</option>
+            <option value="61-98">61–98%</option>
+            <option value="41-60">41–60%</option>
+            <option value="20-40">21–40%</option>
           </select>
           <select id="provider">
             <option value="all">Semua Provider</option>
@@ -137,8 +137,8 @@
   }).format(d);
 
   function rtpClass(v){
-    if(v >= 80) return 'rtp-hi';
-    if(v >= 60) return 'rtp-mid';
+    if(v >= 61) return 'rtp-hi';
+    if(v >= 41) return 'rtp-mid';
     return 'rtp-low';
   }
 
@@ -229,7 +229,7 @@
           <div class="title">${d.nama}</div>
           <div class="foot">
             <span class="pill">${d.provider || 'Provider'}</span>
-            <span>${d.rtp >= 80 ? 'Hot' : d.rtp >= 60 ? 'Medium' : 'Low'}</span>
+            <span>${d.rtp >= 61 ? 'Hot' : d.rtp >= 41 ? 'Medium' : 'Low'}</span>
           </div>
         </article>
       `;
@@ -244,4 +244,5 @@
 </script>
 </body>
 </html>
+
 
