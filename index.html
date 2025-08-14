@@ -148,12 +148,13 @@
 
   // ---- Mock (hapus jika pakai API asli)
   function mockFetch(){
-    const providers = ['PG', 'Pragmatic', 'Habanero', 'Jili', 'CQ9'];
+    const providers = ['Pragmatic'];
     const items = [
-      'Sweet Bonanza','Mahjong Wins 3','Gates of Olympus','Starlight Princess','Sugar Rush 1000',
-      'Aztec Gems','Wild West Gold','Gates of Hades','Ultra Burn Dice','Legend of Garuda'
+      'Sweet Bonanza','','Gates of Olympus','Starlight Princess','Sugar Rush 1000',
+      'Aztec Gems','Wild West Gold','Gates of Hades'
     ];
-    const imgs = (name) =>
+    const imgs = (name) => 'Sweet Bonanza','','Gates of Olympus','Starlight Princess','Sugar Rush 1000',
+      'Aztec Gems','Wild West Gold','Gates of Hades'
       `https://picsum.photos/seed/${encodeURIComponent(name)}/300/300`;
     const list = items.map((n,i)=>({
       id:i+1,
