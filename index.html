@@ -119,11 +119,8 @@
   <div id="grid" class="grid hide"></div>
 
 <script>
-  // ================== KONFIG ==================
-  const API_URL   = "https://example.com/api/rtp"; // Ganti ke API asli Anda
-  const USE_MOCK  = true;  // true: pakai simulasi; false: panggil API_URL
-  const REFRESH_MS = 5 * 60 * 1000; // auto refresh 5 menit
-  // ============================================
+  const USE_MOCK  = true;
+  const REFRESH_MS = 5 * 60 * 1000;
 
   const $grid   = document.getElementById('grid');
   const $status = document.getElementById('status');
@@ -135,7 +132,6 @@
 
   let DATA = [];
 
-  // ---- Util
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
@@ -146,31 +142,29 @@
     return 'rtp-low';
   }
 
-  // ---- Mock (hapus jika pakai API asli)
   function mockFetch(){
-  const providers = ['Pragmatic'];
-  const items = [
-    { nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png' },
-    { nama: 'Gates Of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png' },
-    { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png' },
-    { nama: 'Sugar Rush 1000', gambar: 'Gambar RTP/Sugar Rush 1000.png' },
-    { nama: 'Aztec Gems', gambar: 'Gambar RTP/Aztec Gems.png' },
-    { nama: 'Wild West Gold', gambar: 'Gambar RTP/Wild West Gold.png' },
-    { nama: 'Gates of Hades', gambar: 'Gambar RTP/Gates of Hades.png' }
-  ];
+    const providers = ['Pragmatic'];
+    const items = [
+      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png' },
+      { nama: 'Mahjong Wins 3',     gambar: 'Gambar RTP/Mahjong Wins 3.png' },
+      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png' },
+      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png' },
+      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png' },
+      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png' },
+      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png' },
+      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of Hades.png' }
+    ];
 
-  const list = items.map((g, i) => ({
-    id: i+1,
-    nama: g.nama,
-    provider: providers[i % providers.length],
-    rtp: Math.floor(50 + Math.random()*45),
-    gambar: encodeURI(g.gambar) // otomatis ubah spasi jadi %20
-  }));
+    const list = items.map((g, i) => ({
+      id: i+1,
+      nama: g.nama,
+      provider: providers[i % providers.length],
+      rtp: Math.floor(50 + Math.random()*45),
+      gambar: encodeURI(g.gambar)
+    }));
 
-  return new Promise(res =>
-    setTimeout(() => res({ ok:true, json:()=>Promise.resolve(list) }), 600)
-  );
-}
+    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(list)}), 600));
+  }
 
   async function fetchRTP(){
     $btn.disabled = true;
@@ -179,14 +173,12 @@
     $status.textContent = 'Memuat data…';
 
     try{
-      const resp = USE_MOCK ? await mockFetch() : await fetch(API_URL, {cache:'no-store'});
+      const resp = await mockFetch();
       if(!resp.ok) throw new Error('HTTP ' + resp.status);
       DATA = await resp.json();
 
-      // sort desc by RTP
       DATA.sort((a,b)=>b.rtp - a.rtp);
 
-      // provider options
       const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
       $prov.innerHTML = `<option value="all">Semua Provider</option>` +
                         provs.map(p=>`<option value="${p}">${p}</option>`).join('');
@@ -204,7 +196,6 @@
   }
 
   function render(){
-    // filter
     const q = ($search.value || '').toLowerCase();
     const range = $range.value;
     const prov  = $prov.value;
@@ -232,7 +223,8 @@
       const badge = rtpClass(d.rtp);
       return `
         <article class="card" title="${d.nama}">
-          <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}">
+          <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
+               onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
           <div class="rtp-badge ${badge}">${d.rtp}%</div>
           <div class="bar"><span style="width:${Math.max(0,Math.min(d.rtp,100))}%"></span></div>
           <div class="title">${d.nama}</div>
@@ -245,16 +237,11 @@
     }).join('');
   }
 
-  // events
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
-  // init + auto refresh
   fetchRTP();
   setInterval(fetchRTP, REFRESH_MS);
 </script>
 </body>
 </html>
-
-
-
