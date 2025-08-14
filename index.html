@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Modern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        header h1 {
+            font-size: 2.5rem;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            margin: 0 auto;
+            width: fit-content;
+            animation: slideDown 1s ease-in-out;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            position: relative;
+        }
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0%;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+        button {
+            margin-top: 20px;
+            background: #ff8c00;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #e67600;
+            transform: scale(1.05);
+        }
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🌐 Selamat Datang di Website Modern</h1>
+        <p>Membuat website keren itu mudah!</p>
+    </header>
+
+    <nav>
+        <a href="#">Beranda</a>
+        <a href="#">Tentang</a>
+        <a href="#">Proyek</a>
+        <a href="#">Kontak</a>
+    </nav>
+
+    <main>
+        <h2>Halo, Dunia!</h2>
+        <p>Ini adalah contoh website dengan desain modern dan animasi halus.</p>
+        <button onclick="tampilkanPesan()">Klik Saya</button>
+    </main>
+
+    <footer>
+        &copy; 2025 Website Modern. Semua Hak Dilindungi.
+    </footer>
+
+    <script>
+        function tampilkanPesan() {
+            alert("Terima kasih sudah mencoba website ini! 🚀");
+        }
+    </script>
+</body>
+</html>
