@@ -148,13 +148,13 @@
 
   // ---- Mock (hapus jika pakai API asli)
   function mockFetch(){
-    const providers = ['Pragmatic']
+    const providers = ['Pragmatic'];
     const items = [
       'Sweet Bonanza','','Gates of Olympus','Starlight Princess','Sugar Rush 1000',
       'Aztec Gems','Wild West Gold','Gates of Hades'
     ];
-    const imgs = (name) =>
-      `C:\Users\Cumi\Downloads\Gambar RTP${encodeURIComponent(name)}/300/300`;
+    const imgs = (name) => ['Gambar RTP/Gates Of Olympus.png','Gambar RTP/Gates Of Olympus.png','Gambar RTP/Gates Of hades.png','Gambar RTP/Starlight Princess.png','Gambar RTP/Sugar Rush 1000.png','Gambar RTP/Sweet Bonanza.png','Gambar RTP/Wild West Gold.png'];
+      `${encodeURIComponent(name)}/300/300`;
     const list = items.map((n,i)=>({
       id:i+1,
       nama:n,
@@ -248,4 +248,5 @@
 </script>
 </body>
 </html>
+
 
