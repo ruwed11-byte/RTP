@@ -173,7 +173,7 @@
     const list = items.map((g, i) => ({
       id: i+1,
       nama: g.nama,
-      provider: providers[i % providers.length],
+      provider: g.provider,
       rtp: g.rtp,
       gambar: encodeURI(g.gambar)
     }));
@@ -260,3 +260,4 @@
 </script>
 </body>
 </html>
+
