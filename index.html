@@ -11,9 +11,239 @@
   }
   *{box-sizing:border-box}
   body{
-    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;
-    background:linear-gradient(180deg,#0f1030 0%, #13132a 100%);
-    color:#fff;
+    body {
+    background: #15011c;
+    color: #fff;
+}
+input {
+    padding: 0.4rem;
+}
+textarea:hover, 
+input:hover, 
+textarea:active, 
+input:active, 
+textarea:focus, 
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active
+{
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
+.btn-primary {
+    background: #f19021;
+    border: #f19021;
+}
+
+.btn-primary:hover {
+    background: #d27e1e;
+    background-color: #d27e1e;
+    border: #d27e1e;
+}
+
+.btn-primary:focus {
+    background: #d27e1e;
+    background-color: #d27e1e;
+    border: #d27e1e;
+}
+
+.app {
+    border: 1px solid #f19021;
+    margin: 2px;
+    font-size: 18px;
+    padding: 0.7rem 0.35rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+.app:hover, .app.active  {
+    background: #f19021;
+}
+.text-primary {
+    color: #f19021 !important;
+}
+.cat {
+    border-bottom: 1px dashed #f19021;
+    padding: 10px 0;
+}
+.percent {
+    height: 30px;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0.75rem;
+    background-color: #e9ecef;
+    /* border-radius: .25rem; */
+    position: relative;
+    z-index: 1;
+    border-radius: 15px;
+    /* width: 90%; */
+    margin: 0 auto;
+}
+
+.percent p {
+    z-index: 15;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    transform: translateY(14px);
+    color: black;
+}
+
+.percent-bar {
+    /* background-color: #ffc107; */
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    /* background-color: #007bff; */
+    transition: width 0.6s ease;
+    -webkit-animation: progress-bar-stripes 1s linear infinite;
+    animation: progress-bar-stripes 1s linear infinite;
+    /* animation: ; */
+    z-index: 10;
+}
+.yellow {
+    background-color: #ffc107;
+}
+
+.green {
+    background-color: #28a745;
+}
+
+.red {
+    background-color: #dc3545;
+}
+.volatility {
+    padding: 4px 10px;
+    text-align: center;
+    font-size: 14px;
+    border: 2px solid #575757;
+    border-radius: 15px;
+    background: #210049;
+    display: block;
+}
+.volatility.mobile {
+    display: none;
+}
+.telegram-button{
+    position: relative;
+    vertical-align: top;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #0088cc;
+    border-radius: 3px;
+    padding: 12px 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+    color: #FFF;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+
+.telegram-button:hover{
+    background-color: #007dbb;
+    color: #fff;
+}
+
+.telegram-button:active{
+    background-color: #026698;
+}
+
+.telegram-button i{
+    display: inline-block;
+    height: 18px;
+    width: 20px;
+    vertical-align: middle;
+    margin-right: 2px;
+    background: url('https://telegram.org/img/oauth/tg_button_large.png') no-repeat;
+    background-size: contain;
+}
+
+.telegram-button span{
+    display: inline-block;
+    vertical-align: top;
+}
+.pattern-wrap img {
+    width: 100%;
+    border-radius: 8px;
+}
+@media only screen and (max-width: 1400px) {
+  .volatility {
+      display: none;
+  }
+  .volatility.mobile {
+      display: block;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .pola-text {
+      font-size: 14px !important;
+  }
+  .telegram-text {
+      font-size: 12px;
+  }
+  .logo {
+     width: 40% !important;
+  }
+  .telegram-button i{
+     height: 12px !important;
+     width: 14px !important;
+  }
+  .telegram-button{
+     padding: 8px 12px !important; 
+  }
+  .cat {
+    padding: 5px 0 !important;
+  }
+  .games {
+      font-size: 12px !important;
+  }
+  .game-list h6 {
+      font-size: 12px !important;
+  }
+  .content-game h3{
+      font-size: 16px !important;
+  }
+  .volatility {
+      font-size: 12px !important;
+    padding: 2px !important;
+  }
+  
+.percent {
+    height: 20px !important;
+}
+
+.percent p {
+    font-size: 12px !important;
+    transform: translateY(10px);
+}
+.form-select {
+    font-size: 13px !important;
+}
+img.game-image {
+    margin-bottom: 5px;
+}
+}
   }
   header{
     position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
@@ -239,6 +469,7 @@
 </script>
 </body>
 </html>
+
 
 
 
