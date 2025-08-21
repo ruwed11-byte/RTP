@@ -94,89 +94,38 @@
   .dot.hi{background:var(--hi)} .dot.mid{background:var(--mid)} .dot.low{background:var(--low)}
 </style>
 </head>
-    <body>
-        <style>
-.nav-tabs a.nav-link.active,
-.nav-tabs a.nav-link.active:hover,
-.nav-tabs a.nav-link.active:focus {
-    border-color: #fba121;
-/*    border-bottom-color: transparent;*/
-    color: #fba121 !important;
-    background-color: transparent;
-}
-.nav-tabs, .nav-tabs a.nav-link {
-    color: #f19021 !important;
-    border-bottom: transparent;
-}
-</style>
-<div class="container">
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <div class="alert alert-danger fade show mt-4">
-                <div class="row">
-                    <div class="col-md-3 col-xs-12 text-center">
-                        <img src="https://polagenit.com/warning1.png" style="height:60px;width:auto"/>
-                    </div>
-                    <div class="col-md-9 col-xs-12 text-md-start text-center text-uppercase">
-                        <span>Informasi ini hanya berlaku untuk di web <br>
-                  Bos88, Bro138, Batman138, Luxury333,
-                  <br>QQMacan, Luxury12, Mild88, Luxury111</span>
-                    </div>
-                </div>
-                  
-            </div>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>RTP Live – Dashboard</h1>
+      <div class="toolbar">
+        <div class="group">
+          <input id="search" type="search" placeholder="Cari game…" />
+          <select id="range">
+            <option value="all">Semua RTP</option>
+            <option value="61-98">61–98%</option>
+            <option value="41-60">41–60%</option>
+            <option value="20-40">21–40%</option>
+          </select>
+          <select id="provider">
+            <option value="all">Semua Provider</option>
+          </select>
         </div>
-        <div class="col-m3-4"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 text-center">
-            <a class="pola-text my-2 btn btn-primary" href="https://polagenit.com/cheat-pola" style="font-size: 26px; font-weight: bold">KLIK DISINI UNTUK MELIHAT POLA HARIAN</a><br/>
-            <a class="my-2 telegram-text telegram-button" href="https://t.me/batmanreceh1" target="_BLANK"><i></i> Gabung Grup Telegram</a>
+
+        <div class="legend">
+          <span class="dot hi"></span> Tinggi
+          <span class="dot mid" style="margin-left:8px"></span> Sedang
+          <span class="dot low" style="margin-left:8px"></span> Rendah
         </div>
-        <div class="col-m3-4"></div>
+
+        <div class="meta" id="meta">Last updated: –</div>
+        <button class="btn" id="refresh">Refresh</button>
+      </div>
     </div>
-    <div class="content-game row justify-content-center">
-        <div class="col-md-12">
-            <form id="form" action="" method="GET">
-                <input type="hidden" name="cat" value="2" id="cat">
-                <div class="row mt-3">
-                    <div class="col-md-2 mb-3"><b>Filter Game Berdasarkan</b></div>
-                    <div class="col-md-4 mb-6">
-                        <select class="form-select" name="order">
-                            <option value="percentage_desc" selected=&quot;selected&quot;>RTP Tertinggi</option>
-                            <option value="percentage_asc" >RTP Terendah</option>
-                            <option value="volatility_desc" >Volatility Tertinggi</option>
-                            <option value="volatility_asc" >Volatility Terendah</option>
-                        </select>
-                    </div>
-                    <!-- <div class="col-md-4 mb-6">
-                        <select class="form-select" name="cat">
-                            <option value="all" >Semua Game</option>
-                                                        <option value="2" selected=&quot;selected&quot;>Pragmatic Play</option>
-                                                        <option value="4" >Pocket Game Soft</option>
-                                                        <option value="9" >No Limit City</option>
-                                                    </select>
-                    </div> -->
-                </div>
-            </form>
-            <div id="games" style="margin-top: 25px"class="text-primary cat mb-4">
-                <ul class="nav nav-tabs">
-                                        <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page" onclick="changeTab(2)"><h3 class="text-primarymb-4">Pragmatic Play</h3></a>
-                      </li>
-                                        <li class="nav-item">
-                        <a href="#" class="nav-link " aria-current="page" onclick="changeTab(4)"><h3 class="text-primarymb-4">Pocket Game Soft</h3></a>
-                      </li>
-                                        <li class="nav-item">
-                        <a href="#" class="nav-link " aria-current="page" onclick="changeTab(9)"><h3 class="text-primarymb-4">No Limit City</h3></a>
-                      </li>
-                                    </ul>
-            </div>
-            <div id="games" style="margin-top: 25px">
-                <div class="category my-4">
-                    <div class="row">
+  </header>
+
+  <div id="status" class="status">Memuat data…</div>
+  <div id="grid" class="grid hide"></div>
 
 <script>
   const REFRESH_MS = 12 * 60 * 60 * 1000; // 12 jam
