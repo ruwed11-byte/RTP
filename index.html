@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RTP Live – Dashboard</title>
+<title>RTP Gacor</title>
 <style>
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
@@ -60,16 +60,20 @@
     font-weight:700;
     border-radius:0 0 4px 4px;
     overflow:hidden;
-  }
-  .bar > span {
     display:flex;
     align-items:center;
-    justify-content:flex-end;
+  }
+  .bar .fill {
     height:100%;
-    color:#000;
-    padding-right:4px;
-    white-space:nowrap;
     transition:width .5s ease;
+  }
+  .bar .label {
+    position:absolute;
+    right:4px;
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    text-shadow:0 0 3px rgba(0,0,0,.8);
   }
   .foot{
     position:absolute; bottom:0; left:0; right:0; height:44px; display:flex;
@@ -88,17 +92,6 @@
   .legend{display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted)}
   .dot{width:10px; height:10px; border-radius:50%}
   .dot.hi{background:var(--hi)} .dot.mid{background:var(--mid)} .dot.low{background:var(--low)}
-
-  .provider-tabs .btn-tab{
-    background:var(--accent);
-    color:#fff;
-    border:none;
-    padding:8px 12px;
-    border-radius:8px;
-    cursor:pointer;
-  }
-  .volatility{font-size:11px;color:var(--muted);margin-top:4px;}
-  .star{color:gold;}
 </style>
 </head>
 <body>
@@ -130,15 +123,12 @@
       </div>
     </div>
   </header>
-  <div class="provider-tabs" style="display:flex;gap:10px;justify-content:center;margin-top:10px;"></div>
 
   <div id="status" class="status">Memuat data…</div>
   <div id="grid" class="grid hide"></div>
 
 <script>
-  const USE_MOCK  = true;
   const REFRESH_MS = 12 * 60 * 60 * 1000; // 12 jam
-
   const $grid   = document.getElementById('grid');
   const $status = document.getElementById('status');
   const $meta   = document.getElementById('meta');
@@ -146,7 +136,6 @@
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
   const $btn    = document.getElementById('refresh');
-
   let DATA = [];
 
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
@@ -164,16 +153,7 @@
       { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of hades.png',     rtp: 69, provider: 'Pragmatic' },
       { nama: 'Mahjong Ways',       gambar: 'Gambar RTP/Mahjong Ways.png',       rtp: 93, provider: 'Pocket Game Soft' }
     ];
-
-    const list = items.map((g, i) => ({
-      id: i+1,
-      nama: g.nama,
-      provider: g.provider,
-      rtp: g.rtp,
-      gambar: encodeURI(g.gambar)
-    }));
-
-    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(list)}), 600));
+    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
 
   async function fetchRTP(){
@@ -186,13 +166,10 @@
       const resp = await mockFetch();
       if(!resp.ok) throw new Error('HTTP ' + resp.status);
       DATA = await resp.json();
-
       DATA.sort((a,b)=>b.rtp - a.rtp);
-
       const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
       $prov.innerHTML = `<option value="all">Semua Provider</option>` +
                         provs.map(p=>`<option value="${p}">${p}</option>`).join('');
-
       render();
       $meta.textContent = 'Last updated: ' + fmtTime(new Date());
       $status.classList.add('hide');
@@ -209,7 +186,6 @@
     const q = ($search.value || '').toLowerCase();
     const range = $range.value;
     const prov  = $prov.value;
-
     const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
 
     const items = DATA.filter(d=>{
@@ -229,16 +205,15 @@
     }
 
     $grid.innerHTML = items.map(d=>{
+      const color = d.rtp >= 61 ? 'green' : d.rtp >= 41 ? 'yellow' : 'red';
       return `
         <article class="card" title="${d.nama}">
           <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
                onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
 
           <div class="bar">
-            <span style="
-              width:${Math.max(0,Math.min(d.rtp,100))}% ;
-              background-color:${d.rtp >= 61 ? 'green' : d.rtp >= 41 ? 'yellow' : 'red'};
-            ">${d.rtp}%</span>
+            <span class="fill" style="width:${Math.max(0,Math.min(d.rtp,100))}%;background:${color};"></span>
+            <span class="label">${d.rtp}%</span>
           </div>
 
           <div class="title">${d.nama}</div>
@@ -253,7 +228,6 @@
 
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
-
   fetchRTP();
   setInterval(fetchRTP, REFRESH_MS);
 </script>
