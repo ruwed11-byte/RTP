@@ -194,16 +194,21 @@
     }
 
     $grid.innerHTML = items.map(d=>{
-      const color = d.rtp >= 81 ? 'var(--hi)' : d.rtp >= 61 ? 'var(--mid)' : 'var(--low)';
+      const color = d.rtp >= 61 ? 'green' : d.rtp >= 41 ? 'yellow' : 'red';
       return `
-        <article class="card">
-          <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+        <article class="card" title="${d.nama}">
+          <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
                onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
-          <div class="title">${d.nama}</div>
-          <div class="provider">${d.provider || 'Provider'}</div>
+
           <div class="bar">
-            <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
+            <span class="fill" style="width:${Math.max(0,Math.min(d.rtp,100))}%;background:${color};"></span>
             <span class="label">${d.rtp}%</span>
+          </div>
+
+          <div class="title">${d.nama}</div>
+          <div class="foot">
+            <span class="pill">${d.provider || 'Provider'}</span>
+            <span>${d.rtp >= 61 ? 'Hot' : d.rtp >= 41 ? 'Medium' : 'Low'}</span>
           </div>
         </article>
       `;
