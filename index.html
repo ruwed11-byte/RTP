@@ -172,49 +172,52 @@
   }
 
   function render(){
-    const q = ($search.value || '').toLowerCase();
-    const range = $range.value;
-    const prov  = $prov.value;
-    const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
+  const q = ($search.value || '').toLowerCase();
+  const range = $range.value;
+  const prov  = $prov.value;
+  const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
 
-    const items = DATA.filter(d=>{
-      const okName = d.nama.toLowerCase().includes(q);
-      const okRange = d.rtp>=min && d.rtp<=max;
-      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-      return okName && okRange && okProv;
-    });
+  const items = DATA.filter(d=>{
+    const okName = d.nama.toLowerCase().includes(q);
+    const okRange = d.rtp>=min && d.rtp<=max;
+    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+    return okName && okRange && okProv;
+  });
 
-    if(!items.length){
-      $grid.innerHTML = '';
-      $status.classList.remove('hide');
-      $status.textContent = 'Tidak ada hasil yang cocok.';
-      return;
-    }else{
-      $status.classList.add('hide');
-    }
-
-    $grid.innerHTML = items.map(d=>{
-      const color = d.rtp >= 61 ? 'green' : d.rtp >= 41 ? 'yellow' : 'red';
-      return `
-        <article class="card" title="${d.nama}">
-          <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
-               onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
-
-          <div class="bar">
-            <span class="fill" style="width:${Math.max(0,Math.min(d.rtp,100))}%;background:${color};"></span>
-            <span class="label">${d.rtp}%</span>
-          </div>
-
-          <div class="title">${d.nama}</div>
-          <div class="foot">
-            <span class="pill">${d.provider || 'Provider'}</span>
-            <span>${d.rtp >= 61 ? 'Hot' : d.rtp >= 41 ? 'Medium' : 'Low'}</span>
-          </div>
-        </article>
-      `;
-    }).join('');
+  if(!items.length){
+    $grid.innerHTML = '';
+    $status.classList.remove('hide');
+    $status.textContent = 'Tidak ada hasil yang cocok.';
+    return;
+  }else{
+    $status.classList.add('hide');
   }
 
+  $grid.innerHTML = items.map(d=>{
+    let color;
+    if (d.rtp >= 61) {
+      color = 'var(--hi)';      // hijau
+    } else if (d.rtp >= 41) {
+      color = 'var(--mid)';     // kuning
+    } else {
+      color = 'var(--low)';     // merah
+    }
+
+    return `
+      <article class="card">
+        <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+             onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
+        <div class="title">${d.nama}</div>
+        <div class="provider">${d.provider || 'Provider'}</div>
+        <div class="bar">
+          <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
+          <span class="label">${d.rtp}%</span>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+  
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
   fetchRTP();
