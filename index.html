@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RTP Gacor</title>
+<title>RTP Live – Dashboard</title>
 <style>
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
@@ -41,49 +41,33 @@
   .card{
     position:relative; background:var(--card); border:1px solid rgba(255,255,255,.06);
     border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.25);
+    padding:10px;
     transition:transform .15s ease, box-shadow .15s ease;
   }
   .card:hover{transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,.35)}
-  .thumb{width:100%; aspect-ratio:1/1; object-fit:cover; display:block}
+  .thumb{width:100%; aspect-ratio:1/1; object-fit:cover; display:block; border-radius:12px;}
   .title{
-    padding:8px 10px 12px; font-size:13px; font-weight:700; line-height:1.3;
-    color:#e8e9ff; height:48px; overflow:hidden;
+    font-size:14px; font-weight:700; margin:8px 0 4px; color:#e8e9ff;
+  }
+  .provider{
+    font-size:12px; color:var(--muted); margin-bottom:6px;
   }
   .bar {
-    position:absolute;
-    bottom:54px;
-    left:0;
-    right:0;
-    height:24px;
+    position:relative;
+    height:16px;
     background:rgba(255,255,255,.08);
-    font-size:20px;
-    font-weight:1700;
-    border-radius:0 0 4px 4px;
+    border-radius:6px;
     overflow:hidden;
-    display:flex;
-    align-items:center;
   }
-  .bar .fill {
-    height:100%;
-    transition:width .5s ease;
-  }
+  .bar .fill { height:100%; }
   .bar .label {
     position:absolute;
-    right:4px;
-    color:#fff;
-    font-size:11px;
+    width:100%;
+    text-align:center;
+    font-size:12px;
     font-weight:700;
+    color:#fff;
     text-shadow:0 0 3px rgba(0,0,0,.8);
-  }
-  .foot{
-    position:absolute; bottom:0; left:0; right:0; height:44px; display:flex;
-    align-items:center; justify-content:space-between; padding:0 10px;
-    color:#cfd1ff; font-size:12px; border-top:1px solid rgba(255,255,255,.06);
-    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.15) 100%);
-  }
-  .pill{
-    padding:4px 8px; border-radius:999px; font-weight:700; font-size:11px;
-    border:1px solid rgba(255,255,255,.12); color:#cfd1ff;
   }
   .status{
     text-align:center; color:var(--muted); padding:40px 16px; font-size:14px;
@@ -172,7 +156,6 @@
       const resp = await mockFetch();
       if(!resp.ok) throw new Error('HTTP ' + resp.status);
       DATA = await resp.json();
-      DATA.sort((a,b)=>b.rtp - a.rtp);
       const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
       $prov.innerHTML = `<option value="all">Semua Provider</option>` +
                         provs.map(p=>`<option value="${p}">${p}</option>`).join('');
@@ -189,40 +172,43 @@
   }
 
   function render(){
-  const q = ($search.value || '').toLowerCase();
-  const range = $range.value;
-  const prov  = $prov.value;
-  const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
+    const q = ($search.value || '').toLowerCase();
+    const range = $range.value;
+    const prov  = $prov.value;
+    const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
 
-  const items = DATA.filter(d=>{
-    const okName = d.nama.toLowerCase().includes(q);
-    const okRange = d.rtp>=min && d.rtp<=max;
-    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-    return okName && okRange && okProv;
-  });
+    const items = DATA.filter(d=>{
+      const okName = d.nama.toLowerCase().includes(q);
+      const okRange = d.rtp>=min && d.rtp<=max;
+      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+      return okName && okRange && okProv;
+    });
 
-  if(!items.length){
-    $grid.innerHTML = '';
-    $status.classList.remove('hide');
-    $status.textContent = 'Tidak ada hasil yang cocok.';
-    return;
-  }else{
-    $status.classList.add('hide');
+    if(!items.length){
+      $grid.innerHTML = '';
+      $status.classList.remove('hide');
+      $status.textContent = 'Tidak ada hasil yang cocok.';
+      return;
+    }else{
+      $status.classList.add('hide');
+    }
+
+    $grid.innerHTML = items.map(d=>{
+      const color = d.rtp >= 81 ? 'var(--hi)' : d.rtp >= 61 ? 'var(--mid)' : 'var(--low)';
+      return `
+        <article class="card">
+          <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+               onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
+          <div class="title">${d.nama}</div>
+          <div class="provider">${d.provider || 'Provider'}</div>
+          <div class="bar">
+            <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
+            <span class="label">${d.rtp}%</span>
+          </div>
+        </article>
+      `;
+    }).join('');
   }
-
-  $grid.innerHTML = items.map(d=>{
-    const color = d.rtp >= 81 ? 'green' : d.rtp >= 61 ? 'yellow' : 'orange';
-    return `
-      <article class="card">
-        <div class="title">${d.nama}</div>
-        <div class="bar">
-          <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
-          <span class="label">${d.rtp}%</span>
-        </div>
-      </article>
-    `;
-  }).join('');
- }
 
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
