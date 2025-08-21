@@ -1,81 +1,269 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>RTP Demo</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RTP Live – Dashboard</title>
 <style>
-body { background:#111; color:#fff; font-family:sans-serif; }
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:16px;
-  padding:20px;
-}
-.card {
-  background:#1c1c3f;
-  border-radius:12px;
-  overflow:hidden;
-  position:relative;
-  padding-bottom:50px;
-}
-.thumb { width:100%; aspect-ratio:16/9; object-fit:cover; }
-.rtp-badge {
-  position:absolute; top:8px; left:8px;
-  background:#fff; color:#000; font-weight:bold;
-  padding:4px 8px; border-radius:8px;
-}
-.bar {
+  :root{
+    --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
+    --accent:#6c5ce7;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;
+    background:linear-gradient(180deg,#0f1030 0%, #13132a 100%);
+    color:#fff;
+  }
+  header{
+    position:sticky; top:0; z-index:10; backdrop-filter: blur(6px);
+    background:rgba(19,19,42,.75); border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .wrap{max-width:1200px; margin:0 auto; padding:14px 16px;}
+  h1{margin:0 0 8px;font-size:20px; font-weight:700; letter-spacing:.2px}
+  .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .toolbar .group{display:flex; gap:8px; align-items:center}
+  input[type="search"], select{
+    background:#0f1030; border:1px solid rgba(255,255,255,.12); color:#fff;
+    padding:10px 12px; border-radius:10px; outline:none; min-width:220px;
+  }
+  .btn{
+    background:var(--accent); border:none; color:#fff; padding:10px 14px; border-radius:12px;
+    cursor:pointer; font-weight:600; box-shadow:0 6px 16px rgba(108,92,231,.35);
+  }
+  .btn:disabled{opacity:.6; cursor:not-allowed; box-shadow:none}
+  .meta{margin-left:auto; color:var(--muted); font-size:12px}
+  .grid{
+    max-width:1200px; margin:14px auto; padding:8px 16px 32px;
+    display:grid; gap:16px;
+    grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+  }
+  .card{
+    position:relative; background:var(--card); border:1px solid rgba(255,255,255,.06);
+    border-radius:16px; overflow:hidden; box-shadow:0 6px 20px rgba(0,0,0,.25);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translateY(-2px); box-shadow:0 10px 28px rgba(0,0,0,.35)}
+  .thumb{width:100%; aspect-ratio:1/1; object-fit:cover; display:block}
+  .title{
+    padding:8px 10px 12px; font-size:13px; font-weight:700; line-height:1.3;
+    color:#e8e9ff; height:48px; overflow:hidden;
+  }
+  .rtp-badge{
+    position:absolute; top:8px; left:8px; font-weight:800; font-size:13px;
+    padding:6px 10px; border-radius:12px; color:#0b0b16; background:#fff;
+    box-shadow:0 6px 14px rgba(0,0,0,.25)
+  }
+  .rtp-hi{background:var(--hi); color:#072218}
+  .rtp-mid{background:var(--mid); color:#382a00}
+  .rtp-low{background:var(--low)}
+  .bar {
   position:absolute;
   bottom:44px;
-  left:0; right:0;
+  left:0;
+  right:0;
   height:6px;
   background:rgba(255,255,255,.08);
 }
+
 .bar > span {
   display:block;
   height:100%;
   width:0%;
   transition:width .5s ease;
-  /* warna ditentukan lewat JS */
 }
-.title {
-  padding:8px 10px; font-weight:bold; font-size:14px;
+  
+  .foot{
+    position:absolute; bottom:0; left:0; right:0; height:44px; display:flex;
+    align-items:center; justify-content:space-between; padding:0 10px;
+    color:#cfd1ff; font-size:12px; border-top:1px solid rgba(255,255,255,.06);
+    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.15) 100%);
+  }
+  .pill{
+    padding:4px 8px; border-radius:999px; font-weight:700; font-size:11px;
+    border:1px solid rgba(255,255,255,.12); color:#cfd1ff;
+  }
+  .status{
+    text-align:center; color:var(--muted); padding:40px 16px; font-size:14px;
+  }
+  .hide{display:none}
+  .legend{display:flex; gap:8px; align-items:center; font-size:12px; color:var(--muted)}
+  .dot{width:10px; height:10px; border-radius:50%}
+  .dot.hi{background:var(--hi)} .dot.mid{background:var(--mid)} .dot.low{background:var(--low)}
+
+.provider-tabs .btn-tab{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
 }
-.foot {
-  position:absolute; bottom:0; left:0; right:0;
-  height:44px; display:flex; justify-content:space-between;
-  align-items:center; padding:0 10px; font-size:12px;
-  border-top:1px solid rgba(255,255,255,.1);
-}
-.pill {
-  background:rgba(255,255,255,.1); padding:3px 6px;
-  border-radius:6px; font-size:11px;
-}
+.volatility{font-size:11px;color:var(--muted);margin-top:4px;}
+.star{color:gold;}
+
 </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <h1>RTP Live – Dashboard</h1>
+      <div class="toolbar">
+        <div class="group">
+          <input id="search" type="search" placeholder="Cari game…" />
+          <select id="range">
+            <option value="all">Semua RTP</option>
+            <option value="61-98">61–98%</option>
+            <option value="41-60">41–60%</option>
+            <option value="20-40">21–40%</option>
+          </select>
+          <select id="provider">
+            <option value="all">Semua Provider</option>
+          </select>
+        </div>
 
-<div id="grid" class="grid"></div>
+        <div class="legend">
+          <span class="dot hi"></span> Tinggi
+          <span class="dot mid" style="margin-left:8px"></span> Sedang
+          <span class="dot low" style="margin-left:8px"></span> Rendah
+        </div>
+
+        <div class="meta" id="meta">Last updated: –</div>
+        <button class="btn" id="refresh">Refresh</button>
+      </div>
+    </div>
+  </header>
+<div class="provider-tabs" style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
+</div>
+
+
+  <div id="status" class="status">Memuat data…</div>
+  <div id="grid" class="grid hide"></div>
 
 <script>
-// contoh data mock
-function mockFetch(){
-  const items = [
-    { nama:'Sweet Bonanza', gambar:'https://via.placeholder.com/300x200?text=Sweet+Bonanza', rtp:86, provider:'Pragmatic' },
-    { nama:'Gates of Olympus', gambar:'https://via.placeholder.com/300x200?text=Olympus', rtp:65, provider:'Pragmatic' },
-    { nama:'Wild West Gold', gambar:'https://via.placeholder.com/300x200?text=Wild+West', rtp:40, provider:'Pragmatic' },
-    { nama:'Mahjong Ways', gambar:'https://via.placeholder.com/300x200?text=Mahjong+Ways', rtp:30, provider:'PG Soft' }
-  ];
-  return Promise.resolve({ok:true, json:()=>Promise.resolve(items)});
-}
+  const USE_MOCK  = true;
+  const REFRESH_MS = 12 * 60 * 60 * 1000; // 12 jam
 
-const $grid = document.getElementById('grid');
+  const $grid   = document.getElementById('grid');
+  const $status = document.getElementById('status');
+  const $meta   = document.getElementById('meta');
+  const $search = document.getElementById('search');
+  const $range  = document.getElementById('range');
+  const $prov   = document.getElementById('provider');
+  const $btn    = document.getElementById('refresh');
 
-function render(items){
+  let DATA = [];
+
+  const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
+    hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
+  }).format(d);
+
+  function rtpClass(v){
+    if(v >= 61) return 'rtp-hi';
+    if(v >= 41) return 'rtp-mid';
+    return 'rtp-low';
+  }
+
+  function mockFetch(){
+    const providers = ['Pragmatic','Pocket Game Soft','No Limit City'];
+    const items = [
+      { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png',      rtp: 86, provider: 'Pragmatic' },
+      { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png',   rtp: 65, provider: 'Pragmatic' },
+      { nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 90, provider: 'Pragmatic' },
+      { nama: 'Sugar Rush 1000',    gambar: 'Gambar RTP/Sugar Rush 1000.png',    rtp: 78, provider: 'Pragmatic' },
+      { nama: 'Aztec Gems',         gambar: 'Gambar RTP/Aztec Gems.png',         rtp: 80, provider: 'Pragmatic' },
+      { nama: 'Wild West Gold',     gambar: 'Gambar RTP/Wild West Gold.png',     rtp: 55, provider: 'Pragmatic' },
+      { nama: 'Gates of Hades',     gambar: 'Gambar RTP/Gates Of hades.png',     rtp: 69, provider: 'Pragmatic' },
+      { nama: 'Mahjong Ways',       gambar: 'Gambar RTP/Mahjong Ways.png',       rtp: 93, provider: 'Pocket Game Soft' }
+    ];
+
+    const list = items.map((g, i) => {
+  let level = 'Hot';
+  let color = 'green';
+
+  if (g.rtp >= 61) {
+    level = 'Hot';
+    color = 'green';
+  } else if (g.rtp >= 41) {
+    level = 'Medium';
+    color = 'yellow';
+  } else if (g.rtp >= 20) {
+    level = 'Low';
+    color = 'red';
+  }
+
+  return {
+    id: i+1,
+    nama: g.nama,
+    provider: g.provider,
+    rtp: g.rtp,
+    gambar: encodeURI(g.gambar),
+    level: level,
+    levelColor: color
+  };
+});
+
+
+    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(list)}), 600));
+  }
+
+  async function fetchRTP(){
+    $btn.disabled = true;
+    $status.classList.remove('hide');
+    $grid.classList.add('hide');
+    $status.textContent = 'Memuat data…';
+
+    try{
+      const resp = await mockFetch();
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      DATA = await resp.json();
+
+      DATA.sort((a,b)=>b.rtp - a.rtp);
+
+      const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
+      $prov.innerHTML = `<option value="all">Semua Provider</option>` +
+                        provs.map(p=>`<option value="${p}">${p}</option>`).join('');
+
+      render();
+      $meta.textContent = 'Last updated: ' + fmtTime(new Date());
+      $status.classList.add('hide');
+      $grid.classList.remove('hide');
+    }catch(e){
+      console.error(e);
+      $status.textContent = 'Gagal memuat data. Coba lagi.';
+    }finally{
+      $btn.disabled = false;
+    }
+  }
+
+  function render(){
+  const q = ($search.value || '').toLowerCase();
+  const range = $range.value;
+  const prov  = $prov.value;
+
+  const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
+
+  const items = DATA.filter(d=>{
+    const okName = d.nama.toLowerCase().includes(q);
+    const okRange = d.rtp>=min && d.rtp<=max;
+    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+    return okName && okRange && okProv;
+  });
+
+  if(!items.length){
+    $grid.innerHTML = '';
+    $status.classList.remove('hide');
+    $status.textContent = 'Tidak ada hasil yang cocok.';
+    return;
+  }else{
+    $status.classList.add('hide');
+  }
+
   $grid.innerHTML = items.map(d=>{
     return `
-      <article class="card">
-        <img class="thumb" src="${d.gambar}" alt="${d.nama}">
+      <article class="card" title="${d.nama}">
+        <img class="thumb" loading="lazy" src="${d.gambar}" alt="${d.nama}"
+             onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
         <div class="rtp-badge">${d.rtp}%</div>
         <div class="bar">
           <span style="
@@ -85,19 +273,19 @@ function render(items){
         </div>
         <div class="title">${d.nama}</div>
         <div class="foot">
-          <span class="pill">${d.provider}</span>
+          <span class="pill">${d.provider || 'Provider'}</span>
           <span>${d.rtp >= 61 ? 'Hot' : d.rtp >= 41 ? 'Medium' : 'Low'}</span>
         </div>
       </article>
     `;
   }).join('');
 }
+  
+  [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
+  $btn.addEventListener('click', fetchRTP);
 
-// ambil data & render
-mockFetch().then(res=>res.json()).then(data=>{
-  render(data);
-});
+  fetchRTP();
+  setInterval(fetchRTP, REFRESH_MS);
 </script>
-
 </body>
 </html>
