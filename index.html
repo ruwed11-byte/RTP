@@ -201,19 +201,22 @@ function render(){
   const q = ($search.value || '').toLowerCase();
   const range = $range.value;
   const prov = $prov.value;
-  
+
+  // filter nama & provider dulu
   let items = DATA.filter(d => {
     const okName = d.nama.toLowerCase().includes(q);
     const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
     return okName && okProv;
   });
 
+  // sorting berdasarkan pilihan
   if(range === 'high'){
     items = items.sort((a,b) => b.rtp - a.rtp);
   } else if(range === 'low'){
     items = items.sort((a,b) => a.rtp - b.rtp);
   }
 
+  // tampilkan hasil
   if(items.length){
     $grid.innerHTML = items.map(d=>{
       let color;
@@ -246,31 +249,6 @@ function render(){
     $grid.innerHTML = '';
   }
 }
-
-  $grid.innerHTML = items.map(d=>{
-    let color;
-    if (d.rtp >= 61) {
-      color = 'var(--hi)';      // hijau
-    } else if (d.rtp >= 41) {
-      color = 'var(--mid)';     // kuning
-    } else {
-      color = 'var(--low)';     // merah
-    }
-
-    return `
-      <article class="card">
-        <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
-             onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
-        <div class="title">${d.nama}</div>
-        <div class="provider">${d.provider || 'Provider'}</div>
-        <div class="bar">
-          <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
-          <span class="label">${d.rtp}%</span>
-        </div>
-      </article>
-    `;
-  }).join('');
-}
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
@@ -279,5 +257,6 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
 
