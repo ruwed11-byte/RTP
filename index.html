@@ -94,11 +94,10 @@
         <div class="group">
           <input id="search" type="search" placeholder="Cari game…" />
           <select id="range">
-            <option value="all">Semua RTP</option>
-            <option value="61-98">61–98%</option>
-            <option value="41-60">41–60%</option>
-            <option value="20-40">21–40%</option>
-          </select>
+              <option value="all">Semua RTP</option>
+              <option value="high">RTP Tertinggi</option>
+              <option value="low">RTP Terendah</option>
+            </select>
           <select id="provider">
             <option value="all">Semua Provider</option>
           </select>
@@ -198,27 +197,37 @@ async function fetchRTP(){
     setTimeout(scheduleReset, msUntilNext);
 }
   
-  function render(){
+function render(){
   const q = ($search.value || '').toLowerCase();
   const range = $range.value;
-  const prov  = $prov.value;
-  const [min,max] = range==='all' ? [0,100] : range.split('-').map(Number);
+  const prov = $prov.value;
 
-  const items = DATA.filter(d=>{
+  // filter nama & provider dulu
+  let items = DATA.filter(d => {
     const okName = d.nama.toLowerCase().includes(q);
-    const okRange = d.rtp>=min && d.rtp<=max;
     const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-    return okName && okRange && okProv;
+    return okName && okProv;
   });
 
-  if(!items.length){
-    $grid.innerHTML = '';
-    $status.classList.remove('hide');
-    $status.textContent = 'Tidak ada hasil yang cocok.';
-    return;
-  }else{
-    $status.classList.add('hide');
+  // kalau pilih RTP Tertinggi → sort descending
+  if(range === 'high'){
+    items = items.sort((a,b) => b.rtp - a.rtp);
   }
+  // kalau pilih RTP Terendah → sort ascending
+  else if(range === 'low'){
+    items = items.sort((a,b) => a.rtp - b.rtp);
+  }
+
+  if(items.length){
+    $grid.innerHTML = '';
+    $status.classList.add('hide');
+    items.forEach(renderItem);
+  } else {
+    $status.textContent = 'Tidak ada data.';
+    $status.classList.remove('hide');
+    $grid.innerHTML = '';
+  }
+}
 
   $grid.innerHTML = items.map(d=>{
     let color;
@@ -252,3 +261,4 @@ scheduleReset();
 </script>
 </body>
 </html>
+
