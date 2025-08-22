@@ -153,32 +153,34 @@
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
 
-async function fetchRTP() {
-    $btn.disabled = true;
-    $status.classList.remove('hide');
-    $grid.classList.add('hide');
-    $status.textContent = 'Memuat data…';
+async function fetchRTP(){
+  $btn.disabled = true;
+  $status.classList.remove('hide');
+  $grid.classList.add('hide');
+  $status.textContent = 'Memuat data…';
 
-    try {
-        const resp = await mockFetch();
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        DATA = await resp.json();
+  try {
+    const resp = await mockFetch();
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    DATA = await resp.json();
 
-        const provs = Array.from(new Set(DATA.map(d => d.provider || 'Lainnya')));
-        $prov.innerHTML = '<option value="all">Semua Provider</option>' +
-            provs.map(p => `<option value="${p}">${p}</option>`).join('');
+    const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
+    $prov.innerHTML = `<option value="all">Semua Provider</option>` +
+                      provs.map(p=>`<option value="${p}">${p}</option>`).join('');
 
-        render();
-        $meta.textContent = 'Last updated: ' + fmtTime(new Date());
-        $status.classList.add('hide');
-        $grid.classList.remove('hide');
-    } catch (e) {
-        console.error(e);
-        $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally {
-        $btn.disabled = false;
-    }
-  
+    render();
+    $meta.textContent = 'Last updated: ' + fmtTime(new Date());
+    $status.classList.add('hide');
+    $grid.classList.remove('hide');
+
+  } catch(e) {
+    console.error(e);
+    $status.textContent = 'Gagal memuat data. Coba lagi.';
+  } finally {
+    $btn.disabled = false;
+  }
+}
+
   function scheduleReset() {
     fetchRTP(); // ambil data setiap kali reset
     const now = new Date();
@@ -245,8 +247,8 @@ async function fetchRTP() {
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
+fetchRTP();
 scheduleReset();
 </script>
 </body>
 </html>
-
