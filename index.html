@@ -154,6 +154,10 @@
   
   <div id="status" class="status">Memuat data…</div>
   <div id="grid" class="grid hide"></div>
+html, body {
+  overflow-y: auto !important;
+  height: auto !important;
+}
 
 <script>
   const $grid   = document.getElementById('grid');
@@ -327,6 +331,7 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
 
 
