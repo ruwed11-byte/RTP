@@ -160,6 +160,8 @@
     $status.textContent = 'Memuat data…';
   }
 function scheduleReset() {
+  fetchRTP();
+
   const now = new Date();
   let next = new Date();
 
@@ -167,18 +169,15 @@ function scheduleReset() {
     next.setDate(now.getDate() + 1);
     next.setHours(0, 0, 0, 0);
   } else {
-    // Kalau masih pagi → reset jam 12 siang
     next.setHours(12, 0, 0, 0);
   }
 
   const msUntilNext = next - now;
   console.log("Reset berikutnya:", next.toString());
 
-  setTimeout(() => {
-    fetchRTP();
-    scheduleReset();
-  }, msUntilNext);
+  setTimeout(scheduleReset, msUntilNext);
 }
+
     try{
       const resp = await mockFetch();
       if(!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -247,7 +246,6 @@ function scheduleReset() {
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
-fetchRTP();
 scheduleReset();
 </script>
 </body>
