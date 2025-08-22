@@ -128,6 +128,12 @@
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
   const $btn    = document.getElementById('refresh');
+  const sort = document.getElementById('sort').value;
+  if (sort === 'desc') {
+  items.sort((a,b) => b.rtp - a.rtp);
+} else if (sort === 'asc') {
+  items.sort((a,b) => a.rtp - b.rtp);
+}
   let DATA = [];
 
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
@@ -226,15 +232,11 @@
   }).join('');
 }
   
-  [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
+  [$search, $prov, document.getElementById('sort')]
+  .forEach(el => el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
   fetchRTP();
   setInterval(fetchRTP, REFRESH_MS);
 </script>
 </body>
 </html>
-
-
-
-
-
