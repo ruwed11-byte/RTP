@@ -108,8 +108,7 @@
       </div>
     </div>
   </header>
-
-  <div id="status" class="status">Memuat data…</div>
+  
   <div id="grid" class="grid hide"></div>
 
 <script>
@@ -204,7 +203,7 @@ if (d.rtp >= 61) {
   color = "var(--low)";     // merah
 }
 
-return `
+return 
   <article class="card">
     <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
          onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
@@ -215,7 +214,7 @@ return `
       <span class="label">${d.rtp}%</span>
     </div>
   </article>
-`;
+;
   }
 
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
