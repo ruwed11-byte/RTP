@@ -74,7 +74,7 @@
   text-align:center;
   font-size:12px;
   font-weight:700;
-  color:#000000;
+  color:#fff;
   text-shadow:0 0 3px rgba(0,0,0,.8);
   z-index: 1;
   }
@@ -94,12 +94,11 @@
       <div class="toolbar">
         <div class="group">
           <input id="search" type="search" placeholder="Cari game…" />
-          <select id="range">
-            <option value="all">Semua RTP</option>
-            <option value="61-98">61–98%</option>
-            <option value="41-60">41–60%</option>
-            <option value="20-40">21–40%</option>
-          </select>
+          <select id="sort">
+  <option value="default">Urutan Default</option>
+  <option value="desc">RTP Tertinggi</option>
+  <option value="asc">RTP Terendah</option>
+</select>
           <select id="provider">
             <option value="all">Semua Provider</option>
           </select>
@@ -234,6 +233,7 @@
 </script>
 </body>
 </html>
+
 
 
 
