@@ -283,13 +283,13 @@ function getBiasedRandom(min, max){
 }
 
 function resetRTP(){
-  items.forEach(item => {
+  DATA.forEach(item => {
     item.rtp = getBiasedRandom(20, 97.5);
   });
   render();
-  console.log("✅ RTP direset (acak bias tinggi)", new Date().toString());
+  console.log("✅ RTP semua game direset", new Date().toString());
 }
-
+  
 function scheduleReset() {
   resetRTP();
 
@@ -306,17 +306,17 @@ function scheduleReset() {
   console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
   console.log("⌛ Sisa waktu (ms):", msUntilNext);
 }
-  
+  let items = [];
 function render(){
   const q = ($search.value || '').toLowerCase();
   const range = $range.value;
   const prov = $prov.value;
 
-  let items = DATA.filter(d => {
-    const okName = d.nama.toLowerCase().includes(q);
-    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-    return okName && okProv;
-  });
+  items = DATA.filter(d => {
+  const okName = d.nama.toLowerCase().includes(q);
+  const okProv = prov==='all' || d.provider===prov || d.provider=='Lainnya';
+  return okName && okProv;
+});
 
   if(range === 'high'){
     items = items.sort((a,b) => b.rtp - a.rtp);
@@ -364,6 +364,7 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
 
 
