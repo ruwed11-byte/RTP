@@ -185,7 +185,7 @@ header {
 	{ nama: 'Sugar Rush 1000', gambar: 'Gambar RTP/Sugar Rush 1000.png', rtp: 90, provider: 'Pragmatic Play' },
 	{ nama: 'Aztec Gems', gambar: 'Gambar RTP/Aztec Gems.png', rtp: 89, provider: 'Pragmatic Play' },
 	{ nama: 'Wild West Gold', gambar: 'Gambar RTP/Wild West Gold.png', rtp: 92, provider: 'Pragmatic Play' },
-	{ nama: 'Lucky’s Wild Pub', gambar: 'Gambar RTP/Lucky’s Wild Pub.png', rtp: 67, provider: 'Pragmatic Play' },
+	{ nama: 'Luckys Wild Pub', gambar: 'Gambar RTP/Luckys Wild Pub.png', rtp: 67, provider: 'Pragmatic Play' },
 	{ nama: 'Fiesta Fortune', gambar: 'Gambar RTP/Fiesta Fortune.png', rtp: 63, provider: 'Pragmatic Play' },
 	{ nama: 'Tiny Toads', gambar: 'Gambar RTP/Tiny Toads.png', rtp: 58, provider: 'Pragmatic Play' },
 	{ nama: 'Infini88 Gates Of Gatot Kaca', gambar: 'Gambar RTP/Infini88 Gates Of Gatot Kaca.png', rtp: 97, provider: 'Pragmatic Play' },
@@ -217,7 +217,7 @@ header {
 	{ nama: 'The Dog House Megaways', gambar: 'Gambar RTP/The Dog House Megaways.png', rtp: 72, provider: 'Pragmatic Play' },
 	{ nama: '5 Lions Megaways', gambar: 'Gambar RTP/5 Lions Megaways.png', rtp: 73, provider: 'Pragmatic Play' },
 	{ nama: 'Gates Of Olympus Dice', gambar: 'Gambar RTP/Gates Of Olympus Dice.png', rtp: 74, provider: 'Pragmatic Play' },
-	{ nama: 'Tundra’s Fortune', gambar: 'Gambar RTP/Tundra’s Fortune.png', rtp: 75, provider: 'Pragmatic Play' },
+	{ nama: 'Tundras Fortune', gambar: 'Gambar RTP/Tundras Fortune.png', rtp: 75, provider: 'Pragmatic Play' },
 	{ nama: 'Pirate Gold', gambar: 'Gambar RTP/Pirate Gold.png', rtp: 76, provider: 'Pragmatic Play' },
 	{ nama: 'Pyramid Bonanza', gambar: 'Gambar RTP/Pyramid Bonanza.png', rtp: 77, provider: 'Pragmatic Play' },
 	{ nama: 'Bonanza Gold', gambar: 'Gambar RTP/Bonanza Gold.png', rtp: 78, provider: 'Pragmatic Play' },
@@ -393,11 +393,11 @@ function getBiasedRandom(min, max){
 }
 
 function resetRTP(){
-  items.forEach(item => {
-    item.rtp = getBiasedRandom(20, 97.5);
-  });
-  render();
-  console.log("✅ RTP direset (acak bias tinggi)", new Date().toString());
+    DATA.forEach(item => {
+        item.rtp = getBiasedRandom(20, 97.5);
+    });
+    render();
+    console.log("✅ RTP semua game direset", new Date().toString());
 }
 
 function scheduleReset() {
@@ -448,7 +448,7 @@ function render(){
       return `
         <article class="card">
           <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
-               onerror="this.onerror=null;this.src='Gambar RTP/default.png'">
+               onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
           <div class="title">${d.nama}</div>
           <div class="provider">${d.provider || 'Provider'}</div>
           <div class="bar">
@@ -474,4 +474,5 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
