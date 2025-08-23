@@ -197,7 +197,7 @@ let DATA = [];
   }).format(d);
 
  function mockFetch(){
-DATA = [
+const items = [
 	{ nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png', rtp: 93, provider: 'Pragmatic Play' },
 	{ nama: 'Gates of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png', rtp: 95, provider: 'Pragmatic Play' },
 	{ nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 96, provider: 'Pragmatic Play' },
@@ -246,7 +246,7 @@ DATA = [
 	{ nama: 'Gates Of Olympus 1000', gambar: 'Gambar RTP/Gates Of Olympus 1000.png', rtp: 82, provider: 'Pragmatic Play' },
 	{ nama: 'Fruity Candy', gambar: 'Gambar RTP/Fruity Candy.png', rtp: 78.77, provider: 'Pocket Game Soft' },
 	{ nama: 'Ninja Racoon Frenzy', gambar: 'Gambar RTP/Ninja Racoon Frenzy.png', rtp: 33.59, provider: 'Pocket Game Soft' },
-	{ nama: 'Werewolf's Hunt', gambar: 'Gambar RTP/Werewolf's Hunt.png', rtp: 47.84, provider: 'Pocket Game Soft' },
+	{ nama: 'Werewolfs Hunt', gambar: 'Gambar RTP/Werewolf's Hunt.png', rtp: 47.84, provider: 'Pocket Game Soft' },
 	{ nama: 'Super Golf Drive', gambar: 'Gambar RTP/Super Golf Drive.png', rtp: 37.61, provider: 'Pocket Game Soft' },
 	{ nama: 'Rio Fantasia', gambar: 'Gambar RTP/Rio Fantasia.png', rtp: 79.25, provider: 'Pocket Game Soft' },
 	{ nama: 'Chicky Run', gambar: 'Gambar RTP/Chicky Run.png', rtp: 67.59, provider: 'Pocket Game Soft' },
@@ -271,7 +271,7 @@ DATA = [
 	{ nama: 'Forge Of Wealth', gambar: 'Gambar RTP/Forge Of Wealth.png', rtp: 80.85, provider: 'Pocket Game Soft' },
 	{ nama: 'Wild Heist Cashout', gambar: 'Gambar RTP/Wild Heist Cashout.png', rtp: 48.96, provider: 'Pocket Game Soft' },
 	{ nama: 'Ultimate Striker', gambar: 'Gambar RTP/Ultimate Striker.png', rtp: 47.17, provider: 'Pocket Game Soft' },
-	{ nama: 'Gladiator's Glory', gambar: 'Gambar RTP/Gladiator's Glory.png', rtp: 65.62, provider: 'Pocket Game Soft' },
+	{ nama: 'Gladiators Glory', gambar: 'Gambar RTP/Gladiators Glory.png', rtp: 65.62, provider: 'Pocket Game Soft' },
 	{ nama: 'Bakery Bonanza', gambar: 'Gambar RTP/Bakery Bonanza.png', rtp: 90.26, provider: 'Pocket Game Soft' },
 	{ nama: 'Rave Party Fever', gambar: 'Gambar RTP/Rave Party Fever.png', rtp: 49.82, provider: 'Pocket Game Soft' },
 	{ nama: 'Fortune Rabbit', gambar: 'Gambar RTP/Fortune Rabbit.png', rtp: 54.12, provider: 'Pocket Game Soft' },
@@ -282,7 +282,7 @@ DATA = [
 	{ nama: 'Speed Winner', gambar: 'Gambar RTP/Speed Winner.png', rtp: 53.02, provider: 'Pocket Game Soft' },
 	{ nama: 'Lucky Piggy', gambar: 'Gambar RTP/Lucky Piggy.png', rtp: 45.7, provider: 'Pocket Game Soft' },
 	{ nama: 'Win Win Fish Prawn Crab', gambar: 'Gambar RTP/Win Win Fish Prawn Crab.png', rtp: 59.37, provider: 'Pocket Game Soft' },
-	{ nama: 'The Queen's Banquet', gambar: 'Gambar RTP/The Queen's Banquet.png', rtp: 60.1, provider: 'Pocket Game Soft' },
+	{ nama: 'The Queens Banquet', gambar: 'Gambar RTP/The Queens Banquet.png', rtp: 60.1, provider: 'Pocket Game Soft' },
 	{ nama: 'Rooster Rumble', gambar: 'Gambar RTP/Rooster Rumble.png', rtp: 54.18, provider: 'Pocket Game Soft' },
 	{ nama: 'Butterfly Blossom', gambar: 'Gambar RTP/Butterfly Blossom.png', rtp: 90.81, provider: 'Pocket Game Soft' },
 	{ nama: 'Destiny Of Sun & Moon', gambar: 'Gambar RTP/Destiny Of Sun & Moon.png', rtp: 89.17, provider: 'Pocket Game Soft' },
@@ -296,7 +296,7 @@ DATA = [
 	{ nama: 'Legendary Monkey King', gambar: 'Gambar RTP/Legendary Monkey King.png', rtp: 28.51, provider: 'Pocket Game Soft' },
 	{ nama: 'Buffalo Win', gambar: 'Gambar RTP/Buffalo Win.png', rtp: 54.24, provider: 'Pocket Game Soft' },
 	{ nama: 'Supermarket Spree', gambar: 'Gambar RTP/Supermarket Spree.png', rtp: 43.73, provider: 'Pocket Game Soft' },
-	{ nama: 'Raider Jane's Crypt Of Fortune', gambar: 'Gambar RTP/Raider Jane's Crypt Of Fortune.png', rtp: 42.6, provider: 'Pocket Game Soft' },
+	{ nama: 'Raider Janes Crypt Of Fortune', gambar: 'Gambar RTP/Raider Janes Crypt Of Fortune.png', rtp: 42.6, provider: 'Pocket Game Soft' },
 	{ nama: 'Mermaid Riches', gambar: 'Gambar RTP/Mermaid Riches.png', rtp: 49.84, provider: 'Pocket Game Soft' },
 	{ nama: 'Jurassic Kingdom', gambar: 'Gambar RTP/Jurassic Kingdom.png', rtp: 29.17, provider: 'Pocket Game Soft' },
 	{ nama: 'Rise Of Apollo', gambar: 'Gambar RTP/Rise Of Apollo.png', rtp: 88.36, provider: 'Pocket Game Soft' },
@@ -306,11 +306,11 @@ DATA = [
 	{ nama: 'Opera Dynasty', gambar: 'Gambar RTP/Opera Dynasty.png', rtp: 63.59, provider: 'Pocket Game Soft' },
 	{ nama: 'Guardians Of Ice And Fire', gambar: 'Gambar RTP/Guardians Of Ice And Fire.png', rtp: 22.65, provider: 'Pocket Game Soft' },
 	{ nama: 'Galactic Gems', gambar: 'Gambar RTP/Galactic Gems.png', rtp: 37.37, provider: 'Pocket Game Soft' },
-	{ nama: 'Jack Frost's Winter', gambar: 'Gambar RTP/Jack Frost's Winter.png', rtp: 49.09, provider: 'Pocket Game Soft' },
+	{ nama: 'Jack Frosts Winter', gambar: 'Gambar RTP/Jack Frosts Winter.png', rtp: 49.09, provider: 'Pocket Game Soft' },
 	{ nama: 'Jewels Of Prosperity', gambar: 'Gambar RTP/Jewels Of Prosperity.png', rtp: 73.85, provider: 'Pocket Game Soft' },
-	{ nama: 'Vampire's Charm', gambar: 'Gambar RTP/Vampire's Charm.png', rtp: 73.81, provider: 'Pocket Game Soft' },
+	{ nama: 'Vampires Charm', gambar: 'Gambar RTP/Vampires Charm.png', rtp: 73.81, provider: 'Pocket Game Soft' },
 	{ nama: 'Circus Delight', gambar: 'Gambar RTP/Circus Delight.png', rtp: 43.57, provider: 'Pocket Game Soft' },
-	{ nama: 'Genie's 3 Wishes', gambar: 'Gambar RTP/Genie's 3 Wishes.png', rtp: 37.21, provider: 'Pocket Game Soft' },
+	{ nama: 'Genies 3 Wishes', gambar: 'Gambar RTP/Genies 3 Wishes.png', rtp: 37.21, provider: 'Pocket Game Soft' },
 	{ nama: 'Bikini Paradise', gambar: 'Gambar RTP/Bikini Paradise.png', rtp: 90.01, provider: 'Pocket Game Soft' },
 	{ nama: 'Candy Burst', gambar: 'Gambar RTP/Candy Burst.png', rtp: 43.55, provider: 'Pocket Game Soft' },
 	{ nama: 'Shaolin Soccer', gambar: 'Gambar RTP/Shaolin Soccer.png', rtp: 67.07, provider: 'Pocket Game Soft' },
@@ -324,11 +324,11 @@ DATA = [
 	{ nama: 'Journey To The Wealth', gambar: 'Gambar RTP/Journey To The Wealth.png', rtp: 41.8, provider: 'Pocket Game Soft' },
 	{ nama: 'Jungle Delight', gambar: 'Gambar RTP/Jungle Delight.png', rtp: 75.91, provider: 'Pocket Game Soft' },
 	{ nama: 'Ganesha Gold', gambar: 'Gambar RTP/Ganesha Gold.png', rtp: 25.1, provider: 'Pocket Game Soft' },
-	{ nama: 'Emperor's Favour', gambar: 'Gambar RTP/Emperor's Favour.png', rtp: 48.2, provider: 'Pocket Game Soft' },
+	{ nama: 'Emperors Favour', gambar: 'Gambar RTP/Emperors Favour.png', rtp: 48.2, provider: 'Pocket Game Soft' },
 	{ nama: 'Symbols Of Egypt', gambar: 'Gambar RTP/Symbols Of Egypt.png', rtp: 78.88, provider: 'Pocket Game Soft' },
 	{ nama: 'Piggy Gold', gambar: 'Gambar RTP/Piggy Gold.png', rtp: 50.49, provider: 'Pocket Game Soft' },
 	{ nama: 'Gem Saviour Sword', gambar: 'Gambar RTP/Gem Saviour Sword.png', rtp: 80.92, provider: 'Pocket Game Soft' },
-	{ nama: 'Santa's Gift Rush', gambar: 'Gambar RTP/Santa's Gift Rush.png', rtp: 68.45, provider: 'Pocket Game Soft' },
+	{ nama: 'Santas Gift Rush', gambar: 'Gambar RTP/Santas Gift Rush.png', rtp: 68.45, provider: 'Pocket Game Soft' },
 	{ nama: 'Hip Hop Panda', gambar: 'Gambar RTP/Hip Hop Panda.png', rtp: 63.76, provider: 'Pocket Game Soft' },
 	{ nama: 'Prosperity Lion', gambar: 'Gambar RTP/Prosperity Lion.png', rtp: 96.3, provider: 'Pocket Game Soft' },
 	{ nama: 'Legend Of Hou Yi', gambar: 'Gambar RTP/Legend Of Hou Yi.png', rtp: 39.77, provider: 'Pocket Game Soft' },
@@ -348,7 +348,7 @@ DATA = [
 	{ nama: 'Thai River Wonders', gambar: 'Gambar RTP/Thai River Wonders.png', rtp: 46.86, provider: 'Pocket Game Soft' },
 	{ nama: 'Wild Fireworks', gambar: 'Gambar RTP/Wild Fireworks.png', rtp: 57.4, provider: 'Pocket Game Soft' },
 	{ nama: 'Phoenix Rises', gambar: 'Gambar RTP/Phoenix Rises.png', rtp: 32.64, provider: 'Pocket Game Soft' },
-	{ nama: 'Egypt's Book Of Mystery', gambar: 'Gambar RTP/Egypt's Book Of Mystery.png', rtp: 74.71, provider: 'Pocket Game Soft' },
+	{ nama: 'Egypts Book Of Mystery', gambar: 'Gambar RTP/Egypts Book Of Mystery.png', rtp: 74.71, provider: 'Pocket Game Soft' },
 	{ nama: 'Dragon Hatch', gambar: 'Gambar RTP/Dragon Hatch.png', rtp: 96.18, provider: 'Pocket Game Soft' },
 	{ nama: 'Ways Of The Qilin', gambar: 'Gambar RTP/Ways Of The Qilin.png', rtp: 74.99, provider: 'Pocket Game Soft' },
 	{ nama: 'Wild Bandito', gambar: 'Gambar RTP/Wild Bandito.png', rtp: 87.31, provider: 'Pocket Game Soft' },
@@ -357,7 +357,7 @@ DATA = [
 	{ nama: 'Dreams Of Macau', gambar: 'Gambar RTP/Dreams Of Macau.png', rtp: 36.15, provider: 'Pocket Game Soft' },
 	{ nama: 'Ganesha Fortune', gambar: 'Gambar RTP/Ganesha Fortune.png', rtp: 54.82, provider: 'Pocket Game Soft' },
 	{ nama: 'Caishen Wins', gambar: 'Gambar RTP/Caishen Wins.png', rtp: 27.53, provider: 'Pocket Game Soft' },
-	{ nama: 'Captain's Bounty', gambar: 'Gambar RTP/Captain's Bounty.png', rtp: 40.26, provider: 'Pocket Game Soft' },
+	{ nama: 'Captains Bounty', gambar: 'Gambar RTP/Captains Bounty.png', rtp: 40.26, provider: 'Pocket Game Soft' },
 	{ nama: 'The Great Icescape', gambar: 'Gambar RTP/The Great Icescape.png', rtp: 70.87, provider: 'Pocket Game Soft' },
 	{ nama: 'Double Fortune', gambar: 'Gambar RTP/Double Fortune.png', rtp: 32.06, provider: 'Pocket Game Soft' },
 	{ nama: 'Lucky Neko', gambar: 'Gambar RTP/Lucky Neko.png', rtp: 91.79, provider: 'Pocket Game Soft' },
@@ -373,7 +373,7 @@ DATA = [
 	{ nama: 'Totem Wonders', gambar: 'Gambar RTP/Totem Wonders.png', rtp: 67.5, provider: 'Pocket Game Soft' },
 	{ nama: 'Alchemy Gold', gambar: 'Gambar RTP/Alchemy Gold.png', rtp: 84.26, provider: 'Pocket Game Soft' },
 	{ nama: 'Songkran Splash', gambar: 'Gambar RTP/Songkran Splash.png', rtp: 77.02, provider: 'Pocket Game Soft' },
-	{ nama: 'Lucky Clover Lady', gambar: 'Gambar RTP/Lucky Clover Lady.png', rtp: 71.86, provider: 'Pocket Game Soft' },
+	{ nama: 'Lucky Clover Lady', gambar: 'Gambar RTP/Lucky Clover Lady.png', rtp: 71.86, provider: 'Pocket Game Soft' },	
 		];
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
@@ -488,12 +488,12 @@ let items = DATA.filter(d => {
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
-mockFetch()
 fetchRTP();
 scheduleReset();
 </script>
 </body>
 </html>
+
 
 
 
