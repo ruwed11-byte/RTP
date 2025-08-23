@@ -178,7 +178,7 @@ header {
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
 
-  function mockFetch(){
+   mockFetch(){
     const items = [
       { nama: 'Sweet Bonanza',      gambar: 'Gambar RTP/Sweet Bonanza.png',      rtp: 93, provider: 'Pragmatic Play' },
       { nama: 'Gates of Olympus',   gambar: 'Gambar RTP/Gates Of Olympus.png',   rtp: 95, provider: 'Pragmatic Play' },
@@ -259,21 +259,25 @@ async function fetchRTP(){
   }
 }
 
-  function scheduleReset() {
-    fetchRTP(); // ambil data setiap kali reset
-    const now = new Date();
-    let next = new Date();
-    if (now.getHours() >= 12) {
-        // Kalau sudah lewat jam 12 siang → reset tengah malam
-        next.setDate(now.getDate() + 1);
-        next.setHours(0, 0, 0, 0);
-    } else {
-        // Kalau masih pagi → reset jam 12 siang
-        next.setHours(12, 0, 0, 0);
-    }
-    const msUntilNext = next - now;
-    console.log("Reset berikutnya:", next.toString());
-    setTimeout(scheduleReset, msUntilNext);
+  function resetRTP() {
+  fetchRTP(); 
+}
+
+function scheduleReset() {
+  resetRTP();
+
+  const now = new Date();
+  let next = new Date(now);
+
+  if (now.getHours() < 12) {
+    next.setHours(12, 0, 0, 0);
+  } else if (now.getHours() >= 12 && now.getHours() < 24) {
+    next.setHours(24, 0, 0, 0);
+  }
+
+  const msUntilNext = next - now;
+  console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
+  console.log("⌛ Sisa waktu (ms):", msUntilNext);
 }
   
 function render(){
@@ -281,30 +285,27 @@ function render(){
   const range = $range.value;
   const prov = $prov.value;
 
-  // filter nama & provider dulu
   let items = DATA.filter(d => {
     const okName = d.nama.toLowerCase().includes(q);
     const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
     return okName && okProv;
   });
 
-  // sorting berdasarkan pilihan
   if(range === 'high'){
     items = items.sort((a,b) => b.rtp - a.rtp);
   } else if(range === 'low'){
     items = items.sort((a,b) => a.rtp - b.rtp);
   }
 
-  // tampilkan hasil
   if(items.length){
     $grid.innerHTML = items.map(d=>{
       let color;
       if (d.rtp >= 61) {
-        color = 'var(--hi)';      // hijau
+        color = 'var(--hi)';
       } else if (d.rtp >= 41) {
-        color = 'var(--mid)';     // kuning
+        color = 'var(--mid)';
       } else {
-        color = 'var(--low)';     // merah
+        color = 'var(--low)';
       }
 
       return `
@@ -336,4 +337,5 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
