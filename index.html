@@ -197,7 +197,7 @@ header {
   }).format(d);
 
  function mockFetch(){
-    const items = [
+    let DATA = [
 	{ nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png', rtp: 93, provider: 'Pragmatic Play' },
 	{ nama: 'Gates of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png', rtp: 95, provider: 'Pragmatic Play' },
 	{ nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 96, provider: 'Pragmatic Play' },
@@ -441,10 +441,10 @@ function render(){
   const range = $range.value;
   const prov = $prov.value;
 
-  items = DATA.filter(d => {
+let items = DATA.filter(d => {
   const okName = d.nama.toLowerCase().includes(q);
-  const okProv = prov==='all' || d.provider===prov || d.provider=='Lainnya';
-  return okName && okProv;
+  const okProv = prov==='all' || d.provider===prov || d.provider===prov;
+	return okName && okProv;
 });
 
   if(range === 'high'){
@@ -493,9 +493,3 @@ scheduleReset();
 </script>
 </body>
 </html>
-
-
-
-
-
-
