@@ -13,25 +13,7 @@
 header {
   position: relative !important; /* ganti dari sticky */
 }
-  
-  .group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
 
-  @media (max-width: 768px) {
-    .group {
-      flex-direction: column;   /* biar ke bawah */
-      align-items: stretch;
-    }
-
-    .group input,
-    .group select {
-      width: 100%;  /* biar full */
-    }
-  }
-  
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
     --accent:#6c5ce7;
@@ -47,9 +29,9 @@ header {
     background:rgba(19,19,42,.75); border-bottom:1px solid rgba(255,255,255,.06);
   }
   .logo-circle {
-  width: 180px;
-  height: 180px;
-  border-radius: 75%;
+  width: 240px;
+  height: 240px;
+  border-radius: 100%;
   object-fit: cover;
   }
   .wrap{max-width:1200px; margin:0 auto; padding:14px 16px;}
@@ -129,27 +111,27 @@ header {
       </div>
       <div id="other-logos" style="text-align:center; margin: 20px 0;">
   <a href="https://ayoklik.me/bos88a" target="_blank">
-    <img src="Gambar RTP/Bos88.png" alt="BOS88" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/Bos88.png" alt="BOS88" style="max-height:50px; margin:10px;">
   </a>
 
   <a href="https://ayoklik.me/bro138a" target="_blank">
-    <img src="Gambar RTP/Bro138.png" alt="BRO138" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/Bro138.png" alt="BRO138" style="max-height:50px; margin:10px;">
   </a>
 
   <a href="https://ayoklik.me/batman138a" target="_blank">
-    <img src="Gambar RTP/Batman138.png" alt="BATMAN138" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/Batman138.png" alt="BATMAN138" style="max-height:50px; margin:10px;">
   </a>
 
   <a href="https://ayoklik.me/luxury333a" target="_blank">
-    <img src="Gambar RTP/Luxury333.png" alt="LUXURY333" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/Luxury333.png" alt="LUXURY333" style="max-height:50px; margin:10px;">
   </a>
 
   <a href="https://ayoklik.me/qqmacan1" target="_blank">
-    <img src="Gambar RTP/QQMacan.png" alt="QQMACAN" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/QQMacan.png" alt="QQMACAN" style="max-height:50px; margin:10px;">
   </a>       
         
   <a href="https://ayoklik.me/luxury12a" target="_blank">
-    <img src="Gambar RTP/Luxury12.png" alt="LUXURY12" style="max-height:30px; margin:10px;">
+    <img src="Gambar RTP/Luxury12.png" alt="LUXURY12" style="max-height:50px; margin:10px;">
   </a>
 
 </div>
@@ -190,14 +172,14 @@ header {
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
   const $btn    = document.getElementById('refresh');
-let DATA = [];
+  let DATA = [];
 
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
 
  function mockFetch(){
-return = [
+    const items = [
 	{ nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png', rtp: 93, provider: 'Pragmatic Play' },
 	{ nama: 'Gates of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png', rtp: 95, provider: 'Pragmatic Play' },
 	{ nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 96, provider: 'Pragmatic Play' },
@@ -246,7 +228,7 @@ return = [
 	{ nama: 'Gates Of Olympus 1000', gambar: 'Gambar RTP/Gates Of Olympus 1000.png', rtp: 82, provider: 'Pragmatic Play' },
 	{ nama: 'Fruity Candy', gambar: 'Gambar RTP/Fruity Candy.png', rtp: 78.77, provider: 'Pocket Game Soft' },
 	{ nama: 'Ninja Racoon Frenzy', gambar: 'Gambar RTP/Ninja Racoon Frenzy.png', rtp: 33.59, provider: 'Pocket Game Soft' },
-	{ nama: 'Werewolfs Hunt', gambar: 'Gambar RTP/Werewolf's Hunt.png', rtp: 47.84, provider: 'Pocket Game Soft' },
+	{ nama: 'Werewolfs Hunt', gambar: 'Gambar RTP/Werewolfs Hunt.png', rtp: 47.84, provider: 'Pocket Game Soft' },
 	{ nama: 'Super Golf Drive', gambar: 'Gambar RTP/Super Golf Drive.png', rtp: 37.61, provider: 'Pocket Game Soft' },
 	{ nama: 'Rio Fantasia', gambar: 'Gambar RTP/Rio Fantasia.png', rtp: 79.25, provider: 'Pocket Game Soft' },
 	{ nama: 'Chicky Run', gambar: 'Gambar RTP/Chicky Run.png', rtp: 67.59, provider: 'Pocket Game Soft' },
@@ -373,10 +355,11 @@ return = [
 	{ nama: 'Totem Wonders', gambar: 'Gambar RTP/Totem Wonders.png', rtp: 67.5, provider: 'Pocket Game Soft' },
 	{ nama: 'Alchemy Gold', gambar: 'Gambar RTP/Alchemy Gold.png', rtp: 84.26, provider: 'Pocket Game Soft' },
 	{ nama: 'Songkran Splash', gambar: 'Gambar RTP/Songkran Splash.png', rtp: 77.02, provider: 'Pocket Game Soft' },
-	{ nama: 'Lucky Clover Lady', gambar: 'Gambar RTP/Lucky Clover Lady.png', rtp: 71.86, provider: 'Pocket Game Soft' },	
-		];
- }
-	
+	{ nama: 'Lucky Clover Lady', gambar: 'Gambar RTP/Lucky Clover Lady.png', rtp: 71.86, provider: 'Pocket Game Soft' },
+    ];
+    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
+  }
+
 async function fetchRTP(){
   $btn.disabled = true;
   $status.classList.remove('hide');
@@ -384,7 +367,9 @@ async function fetchRTP(){
   $status.textContent = 'Memuat data…';
 
   try {
-    DATA = mockFetch();
+    const resp = await mockFetch();
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    DATA = await resp.json();
 
     const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
     $prov.innerHTML = `<option value="all">Semua Provider</option>` +
@@ -409,13 +394,13 @@ function getBiasedRandom(min, max){
 }
 
 function resetRTP(){
-  DATA.forEach(item => {
+  items.forEach(item => {
     item.rtp = getBiasedRandom(20, 97.5);
   });
   render();
-  console.log("✅ RTP semua game direset", new Date().toString());
+  console.log("✅ RTP direset (acak bias tinggi)", new Date().toString());
 }
-  
+
 function scheduleReset() {
   resetRTP();
 
@@ -432,17 +417,17 @@ function scheduleReset() {
   console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
   console.log("⌛ Sisa waktu (ms):", msUntilNext);
 }
-  let items = [];
+  
 function render(){
   const q = ($search.value || '').toLowerCase();
   const range = $range.value;
   const prov = $prov.value;
 
-let items = DATA.filter(d => {
-  const okName = d.nama.toLowerCase().includes(q);
-  const okProv = prov==='all' || d.provider===prov || d.provider===prov;
-	return okName && okProv;
-});
+  let items = DATA.filter(d => {
+    const okName = d.nama.toLowerCase().includes(q);
+    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+    return okName && okProv;
+  });
 
   if(range === 'high'){
     items = items.sort((a,b) => b.rtp - a.rtp);
@@ -490,4 +475,3 @@ scheduleReset();
 </script>
 </body>
 </html>
-
