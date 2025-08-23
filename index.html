@@ -258,9 +258,18 @@ async function fetchRTP(){
     $btn.disabled = false;
   }
 }
+  
+function getBiasedRandom(min, max){
+  let r = Math.random() ** 0.5;
+  return parseFloat((min + (max - min) * r).toFixed(1)); 
+}
 
-  function resetRTP() {
-  fetchRTP(); 
+function resetRTP(){
+  items.forEach(item => {
+    item.rtp = getBiasedRandom(20, 97.5);
+  });
+  render();
+  console.log("✅ RTP direset (acak bias tinggi)", new Date().toString());
 }
 
 function scheduleReset() {
@@ -337,6 +346,3 @@ scheduleReset();
 </script>
 </body>
 </html>
-
-
-
