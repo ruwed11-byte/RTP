@@ -13,7 +13,25 @@
 header {
   position: relative !important; /* ganti dari sticky */
 }
+  
+  .group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
+  @media (max-width: 768px) {
+    .group {
+      flex-direction: column;   /* biar ke bawah */
+      align-items: stretch;
+    }
+
+    .group input,
+    .group select {
+      width: 100%;  /* biar full */
+    }
+  }
+  
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
     --accent:#6c5ce7;
@@ -346,5 +364,6 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
 
