@@ -190,13 +190,14 @@ header {
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
   const $btn    = document.getElementById('refresh');
+let DATA = [];
 
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
 
  function mockFetch(){
-let DATA = [
+DATA = [
 	{ nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png', rtp: 93, provider: 'Pragmatic Play' },
 	{ nama: 'Gates of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png', rtp: 95, provider: 'Pragmatic Play' },
 	{ nama: 'Starlight Princess', gambar: 'Gambar RTP/Starlight Princess.png', rtp: 96, provider: 'Pragmatic Play' },
@@ -487,10 +488,12 @@ let items = DATA.filter(d => {
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
+mockFetch()
 fetchRTP();
 scheduleReset();
 </script>
 </body>
 </html>
+
 
 
