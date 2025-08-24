@@ -11,9 +11,27 @@
 }
 
 header {
-  position: relative !important; /* ganti dari sticky */
+  position: relative !important;
 }
 
+	.group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+	@media (max-width: 768px) {
+    .group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .group input,
+    .group select {
+      width: 100%;
+    }
+  }
+	
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
     --accent:#6c5ce7;
@@ -37,7 +55,7 @@ header {
   .wrap{max-width:1200px; margin:0 auto; padding:14px 16px;}
   h1{margin:0 0 8px;font-size:20px; font-weight:700; letter-spacing:.2px}
   .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-  .toolbar .group{display:flex; gap:8px; align-items:center}
+  .toolbar .{display:flex; gap:8px; align-items:center}
   input[type="search"], select{
     background:#0f1030; border:1px solid rgba(255,255,255,.12); color:#fff;
     padding:10px 12px; border-radius:10px; outline:none; min-width:220px;
@@ -137,7 +155,7 @@ header {
 </div>
       <h1>RTP Live – Dashboard</h1>
       <div class="toolbar">
-        <div class="group">
+        <div class="">
           <input id="search" type="search" placeholder="Cari game…" />
           <select id="range">
               <option value="high">RTP Tertinggi</option>
@@ -584,4 +602,5 @@ scheduleReset();
 </script>
 </body>
 </html>
+
 
