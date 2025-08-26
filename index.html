@@ -520,29 +520,18 @@ function getBiasedRandom(min, max){
   return parseFloat((min + (max - min) * r).toFixed(1)); 
 }
 
-function resetRTP(){
-    DATA.forEach(item => {
-        item.rtp = getBiasedRandom(20, 97.5);
-    });
-    render();
-    console.log("✅ RTP semua game direset", new Date().toString());
+function resetRTP() {
+  const rtp = (Math.random() * (97.5 - 20) + 20).toFixed(2);
+  console.log("🔄 RTP baru di-set:", rtp + "%", "pada:", new Date().toString());
+  return rtp;
 }
 
 function scheduleReset() {
   resetRTP();
-
-  const now = new Date();
-  let next = new Date(now);
-
-  if (now.getHours() < 12) {
-    next.setHours(12, 0, 0, 0);
-  } else if (now.getHours() >= 12 && now.getHours() < 24) {
-    next.setHours(24, 0, 0, 0);
-  }
-
-  const msUntilNext = next - now;
+  const msUntilNext = 12 * 60 * 60 * 1000;
+  const next = new Date(Date.now() + msUntilNext);
   console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
-  console.log("⌛ Sisa waktu (ms):", msUntilNext);
+  setTimeout(scheduleReset, msUntilNext);
 }
   
 function render(){
@@ -597,8 +586,8 @@ function render(){
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
-fetchRTP();
 scheduleReset();
+fetchRTP();
 </script>
 </body>
 </html>
