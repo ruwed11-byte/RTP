@@ -528,6 +528,7 @@ function resetRTP() {
 
 function scheduleReset() {
   resetRTP();
+	
   const msUntilNext = 12 * 60 * 60 * 1000;
   const next = new Date(Date.now() + msUntilNext);
   console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
@@ -591,3 +592,4 @@ fetchRTP();
 </script>
 </body>
 </html>
+
