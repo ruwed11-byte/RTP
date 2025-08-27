@@ -519,21 +519,6 @@ function getBiasedRandom(min, max){
   let r = Math.random() ** 0.5;
   return parseFloat((min + (max - min) * r).toFixed(1)); 
 }
-
-function resetRTP() {
-  const rtp = (Math.random() * (97.5 - 20) + 20).toFixed(2);
-  console.log("🔄 RTP baru di-set:", rtp + "%", "pada:", new Date().toString());
-  return rtp;
-}
-
-function scheduleReset() {
-  resetRTP();
-	
-  const msUntilNext = 12 * 60 * 60 * 1000;
-  const next = new Date(Date.now() + msUntilNext);
-  console.log("⏰ Reset berikutnya dijadwalkan pada:", next.toString());
-  setTimeout(scheduleReset, msUntilNext);
-}
   
 function render(){
   const q = ($search.value || '').toLowerCase();
@@ -587,9 +572,9 @@ function render(){
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
-scheduleReset();
 fetchRTP();
 </script>
 </body>
 </html>
+
 
