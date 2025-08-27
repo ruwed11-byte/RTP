@@ -590,9 +590,7 @@ function scheduleReset() {
     } else {
       nextReset.setHours(24, 0, 0, 0);
     }
-
     const msUntilNext = nextReset - now;
-
     setTimeout(() => {
       fetchRTP();
       setInterval(fetchRTP, 12 * 60 * 60 * 1000);
@@ -604,6 +602,3 @@ scheduleReset();
 </script>
 </body>
 </html>
-
-
-
