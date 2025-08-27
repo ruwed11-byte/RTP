@@ -487,6 +487,18 @@ header {
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
 
+function getBiasedRandom(min, max){
+    let r = Math.random() ** 0.5;
+    return parseFloat((min + (max - min) * r).toFixed(1)); 
+  }
+
+function randomizeRTP(items) {
+    return items.map(d => ({
+      ...d,
+      rtp: getBiasedRandom(20, 97.5)
+    }));
+  }
+	
 async function fetchRTP(){
   $btn.disabled = true;
   $status.classList.remove('hide');
@@ -514,12 +526,7 @@ async function fetchRTP(){
     $btn.disabled = false;
   }
 }
-  
-function getBiasedRandom(min, max){
-  let r = Math.random() ** 0.5;
-  return parseFloat((min + (max - min) * r).toFixed(1)); 
-}
-  
+
 function render(){
   const q = ($search.value || '').toLowerCase();
   const range = $range.value;
@@ -572,9 +579,31 @@ function render(){
   
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
+
+function scheduleReset() {
+    const now = new Date();
+    const hours = now.getHours();
+
+    let nextReset = new Date(now);
+    if (hours < 12) {
+      nextReset.setHours(12, 0, 0, 0);
+    } else {
+      nextReset.setHours(24, 0, 0, 0);
+    }
+
+    const msUntilNext = nextReset - now;
+
+    setTimeout(() => {
+      fetchRTP();
+      setInterval(fetchRTP, 12 * 60 * 60 * 1000);
+    }, msUntilNext);
+  }
+	
 fetchRTP();
+scheduleReset();
 </script>
 </body>
 </html>
+
 
 
