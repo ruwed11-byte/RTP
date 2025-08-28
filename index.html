@@ -6,21 +6,21 @@
 <title>Pola Gacor Batman</title>
 <style>
   html, body {
-  height: auto !important;
-  overflow-y: auto !important;
-}
+    height: auto !important;
+    overflow-y: auto !important;
+  }
 
-header {
-  position: relative !important;
-}
+  header {
+    position: relative !important;
+  }
 
-	.group {
+  .group {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
 
-	@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .group {
       flex-direction: column;
       align-items: stretch;
@@ -31,7 +31,7 @@ header {
       width: 100%;
     }
   }
-	
+
   :root{
     --bg:#13132a; --card:#1c1c3f; --muted:#8d90b3; --hi:#20c997; --mid:#ffc107; --low:#f03e3e;
     --accent:#6c5ce7;
@@ -47,15 +47,21 @@ header {
     background:rgba(19,19,42,.75); border-bottom:1px solid rgba(255,255,255,.06);
   }
   .logo-circle {
-  width: 240px;
-  height: 240px;
-  border-radius: 100%;
-  object-fit: cover;
+    width: 240px;
+    height: 240px;
+    border-radius: 100%;
+    object-fit: cover;
   }
   .wrap{max-width:1200px; margin:0 auto; padding:14px 16px;}
   h1{margin:0 0 8px;font-size:20px; font-weight:700; letter-spacing:.2px}
-  .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-  .toolbar .{display:flex; gap:8px; align-items:center}
+  .toolbar{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+  }
+  .toolbar > div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
   input[type="search"], select{
     background:#0f1030; border:1px solid rgba(255,255,255,.12); color:#fff;
     padding:10px 12px; border-radius:10px; outline:none; min-width:220px;
@@ -86,30 +92,30 @@ header {
     font-size:12px; color:var(--muted); margin-bottom:6px;
   }
   .bar {
-  position:relative;
-  height:16px;
-  background:rgba(255,255,255,.08);
-  border-radius:6px;
-  overflow:hidden;
-}
-.bar .fill {
-  position:absolute;
-  top:0;
-  left:0;
-  height:100%;
-  display:block;
-  z-index:0;
-}
-.bar .label {
-  position:absolute;
-  width:100%;
-  text-align:center;
-  font-size:12px;
-  font-weight:700;
-  color:#fff;
-  text-shadow:0 0 3px rgba(0,0,0,.8);
-  z-index:1;
-}
+    position:relative;
+    height:16px;
+    background:rgba(255,255,255,.08);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .bar .fill {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    display:block;
+    z-index:0;
+  }
+  .bar .label {
+    position:absolute;
+    width:100%;
+    text-align:center;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    text-shadow:0 0 3px rgba(0,0,0,.8);
+    z-index:1;
+  }
   .status{
     text-align:center; color:var(--muted); padding:40px 16px; font-size:14px;
   }
@@ -155,7 +161,7 @@ header {
 </div>
       <h1>RTP Live – Dashboard</h1>
       <div class="toolbar">
-        <div class="">
+        <div>
           <input id="search" type="search" placeholder="Cari game…" />
           <select id="range">
               <option value="high">RTP Tertinggi</option>
@@ -195,7 +201,7 @@ header {
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
 
- function mockFetch(){
+  function mockFetch(){
     const items = [
 	{ nama: 'Sweet Bonanza', gambar: 'Gambar RTP/Sweet Bonanza.png', rtp: 93.26, provider: 'Pragmatic Play' },
 	{ nama: 'Gates of Olympus', gambar: 'Gambar RTP/Gates Of Olympus.png', rtp: 95.38, provider: 'Pragmatic Play' },
@@ -487,100 +493,88 @@ header {
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
 
-function getBiasedRandom(min, max){
-    let r = Math.random() ** 0.5;
-    return parseFloat((min + (max - min) * r).toFixed(1)); 
-  }
-
-function randomizeRTP(items) {
-    return items.map(d => ({
-      ...d,
-      rtp: getBiasedRandom(20, 97.5)
-    }));
-  }
-	
-async function fetchRTP(){
-  $btn.disabled = true;
-  $status.classList.remove('hide');
-  $grid.classList.add('hide');
-  $status.textContent = 'Memuat data…';
-
-  try {
-    const resp = await mockFetch();
-    if(!resp.ok) throw new Error('HTTP ' + resp.status);
-    DATA = await resp.json();
-
-    const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
-    $prov.innerHTML = `<option value="all">Semua Provider</option>` +
-                      provs.map(p=>`<option value="${p}">${p}</option>`).join('');
-
-    render();
-    $meta.textContent = 'Last updated: ' + fmtTime(new Date());
-    $status.classList.add('hide');
-    $grid.classList.remove('hide');
-
-  } catch(e) {
-    console.error(e);
-    $status.textContent = 'Gagal memuat data. Coba lagi.';
-  } finally {
-    $btn.disabled = false;
-  }
-}
-
-function render(){
-  const q = ($search.value || '').toLowerCase();
-  const range = $range.value;
-  const prov = $prov.value;
-
-  let items = DATA.filter(d => {
-    const okName = d.nama.toLowerCase().includes(q);
-    const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-    return okName && okProv;
-  });
-
-  if(range === 'high'){
-    items = items.sort((a,b) => b.rtp - a.rtp);
-  } else if(range === 'low'){
-    items = items.sort((a,b) => a.rtp - b.rtp);
-  }
-
-  if(items.length){
-    $grid.innerHTML = items.map(d=>{
-      let color;
-      if (d.rtp >= 61) {
-        color = 'var(--hi)';
-      } else if (d.rtp >= 41) {
-        color = 'var(--mid)';
-      } else {
-        color = 'var(--low)';
-      }
-
-      return `
-        <article class="card">
-          <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
-               onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
-          <div class="title">${d.nama}</div>
-          <div class="provider">${d.provider || 'Provider'}</div>
-          <div class="bar">
-            <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
-            <span class="label">${d.rtp}%</span>
-          </div>
-        </article>
-      `;
-    }).join('');
-
-    $status.classList.add('hide');
-  } else {
-    $status.textContent = 'Tidak ada data.';
+  async function fetchRTP(){
+    $btn.disabled = true;
     $status.classList.remove('hide');
-    $grid.innerHTML = '';
+    $grid.classList.add('hide');
+    $status.textContent = 'Memuat data…';
+
+    try {
+      const resp = await mockFetch();
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      DATA = await resp.json();
+
+      const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
+      $prov.innerHTML = `<option value="all">Semua Provider</option>` +
+                        provs.map(p=>`<option value="${p}">${p}</option>`).join('');
+
+      render();
+      $meta.textContent = 'Last updated: ' + fmtTime(new Date());
+      $status.classList.add('hide');
+      $grid.classList.remove('hide');
+
+    } catch(e) {
+      console.error(e);
+      $status.textContent = 'Gagal memuat data. Coba lagi.';
+    } finally {
+      $btn.disabled = false;
+    }
   }
-}
-  
+
+  function render(){
+    const q = ($search.value || '').toLowerCase();
+    const range = $range.value;
+    const prov = $prov.value;
+
+    let items = DATA.filter(d => {
+      const okName = d.nama.toLowerCase().includes(q);
+      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+      return okName && okProv;
+    });
+
+    if(range === 'high'){
+      items = items.sort((a,b) => b.rtp - a.rtp);
+    } else if(range === 'low'){
+      items = items.sort((a,b) => a.rtp - b.rtp);
+    }
+
+    if(items.length){
+      $grid.innerHTML = items.map(d=>{
+        let color;
+        if (d.rtp >= 61) {
+          color = 'var(--hi)';
+        } else if (d.rtp >= 41) {
+          color = 'var(--mid)';
+        } else {
+          color = 'var(--low)';
+        }
+
+        return `
+          <article class="card">
+            <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+                 onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
+            <div class="title">${d.nama}</div>
+            <div class="provider">${d.provider || 'Provider'}</div>
+            <div class="bar">
+              <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
+              <span class="label">${d.rtp}%</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      $status.classList.add('hide');
+    } else {
+      $status.textContent = 'Tidak ada data.';
+      $status.classList.remove('hide');
+      $grid.innerHTML = '';
+    }
+  }
+
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
-function scheduleReset() {
+  function scheduleReset() {
     const now = new Date();
     const hours = now.getHours();
 
@@ -590,17 +584,18 @@ function scheduleReset() {
     } else {
       nextReset.setHours(24, 0, 0, 0);
     }
-	
-    const msUntilNext = nextReset - now;
-	
+
+    const msUntilNext = nextReset.getTime() - now.getTime();
+
     setTimeout(() => {
       fetchRTP();
+
       setInterval(fetchRTP, 12 * 60 * 60 * 1000);
     }, msUntilNext);
   }
-	
-fetchRTP();
-scheduleReset();
+
+  fetchRTP();
+  scheduleReset();
 </script>
 </body>
 </html>
