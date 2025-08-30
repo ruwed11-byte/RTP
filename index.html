@@ -509,6 +509,7 @@ async function fetchRTP() {
 
   if (resp.ok) {
     DATA = await resp.json();
+    console.log("Data berhasil dimuat:", DATA);
     render();
   } else {
     console.error("Gagal memuat data.");
@@ -516,6 +517,7 @@ async function fetchRTP() {
 }
 
 function render() {
+  console.log("Rendering data:", DATA);
   const $grid = document.getElementById('grid');
   $grid.innerHTML = DATA.map(d => {
     let color;
@@ -566,9 +568,3 @@ function scheduleReset() {
 </script>
 </body>
 </html>
-
-
-
-
-
-
