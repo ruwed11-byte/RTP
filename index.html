@@ -202,7 +202,7 @@
   }).format(d);
 
   function mockFetch(){
-    const items = [
+    let DATA = [
 { nama: 'Sweet Bonanza', rtp: 47.5, gambar: 'Gambar RTP/Sweet Bonanza.png', provider: 'Pragmatic Play' },
 { nama: 'Gates of Olympus', rtp: 65.5, gambar: 'Gambar RTP/Gates Of Olympus.png', provider: 'Pragmatic Play' },
 { nama: 'Starlight Princess', rtp: 71.1, gambar: 'Gambar RTP/Starlight Princess.png', provider: 'Pragmatic Play' },
@@ -493,110 +493,78 @@
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
 
-  async function fetchRTP(){
-    $btn.disabled = true;
-    $status.classList.remove('hide');
-    $grid.classList.add('hide');
-    $status.textContent = 'Memuat data…';
+  function resetRTP() {
+  DATA = DATA.map(item => {
+    item.rtp = (Math.random() * (97.5 - 20.1) + 20.1).toFixed(1);
+    return item;
+  });
 
-    try {
-      const resp = await mockFetch();
-      if(!resp.ok) throw new Error('HTTP ' + resp.status);
-      DATA = await resp.json();
+  console.log("🔄 RTP baru di-set:", DATA);
+  render();
+}
 
-      const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
-      $prov.innerHTML = `<option value="all">Semua Provider</option>` +
-                        provs.map(p=>`<option value="${p}">${p}</option>`).join('');
+async function fetchRTP() {
+  console.log("🕒 Memuat data RTP...");
 
-      render();
-      $meta.textContent = 'Last updated: ' + fmtTime(new Date());
-      $status.classList.add('hide');
-      $grid.classList.remove('hide');
+  const resp = { ok: true, json: () => Promise.resolve(DATA) };
 
-    } catch(e) {
-      console.error(e);
-      $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally {
-      $btn.disabled = false;
-    }
+  if (resp.ok) {
+    DATA = await resp.json();
+
+    render();
+  } else {
+    console.error("Gagal memuat data.");
   }
+}
 
-  function render(){
-    const q = ($search.value || '').toLowerCase();
-    const range = $range.value;
-    const prov = $prov.value;
-
-    let items = DATA.filter(d => {
-      const okName = d.nama.toLowerCase().includes(q);
-      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-      return okName && okProv;
-    });
-
-    if(range === 'high'){
-      items = items.sort((a,b) => b.rtp - a.rtp);
-    } else if(range === 'low'){
-      items = items.sort((a,b) => a.rtp - b.rtp);
-    }
-
-    if(items.length){
-      $grid.innerHTML = items.map(d=>{
-        let color;
-        if (d.rtp >= 61) {
-          color = 'var(--hi)';
-        } else if (d.rtp >= 41) {
-          color = 'var(--mid)';
-        } else {
-          color = 'var(--low)';
-        }
-
-        return `
-          <article class="card">
-            <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
-                 onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
-            <div class="title">${d.nama}</div>
-            <div class="provider">${d.provider || 'Provider'}</div>
-            <div class="bar">
-              <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
-              <span class="label">${d.rtp}%</span>
-            </div>
-          </article>
-        `;
-      }).join('');
-
-      $status.classList.add('hide');
+function render() {
+  const $grid = document.getElementById('grid');
+  $grid.innerHTML = DATA.map(d => {
+    let color;
+    if (d.rtp >= 61) {
+      color = 'var(--hi)';
+    } else if (d.rtp >= 41) {
+      color = 'var(--mid)';
     } else {
-      $status.textContent = 'Tidak ada data.';
-      $status.classList.remove('hide');
-      $grid.innerHTML = '';
-    }
-  }
-
-  [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
-  $btn.addEventListener('click', fetchRTP);
-
-  function scheduleReset() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    let nextReset = new Date(now);
-    if (hours < 12) {
-      nextReset.setHours(12, 0, 0, 0);
-    } else {
-      nextReset.setHours(24, 0, 0, 0);
+      color = 'var(--low)';
     }
 
-    const msUntilNext = nextReset.getTime() - now.getTime();
+    return `
+      <article class="card">
+        <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+             onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
+        <div class="title">${d.nama}</div>
+        <div class="provider">${d.provider || 'Provider'}</div>
+        <div class="bar">
+          <span class="fill" style="width:${d.rtp}%;background:${color};"></span>
+          <span class="label">${d.rtp}%</span>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
 
-    setTimeout(() => {
-      fetchRTP();
+function scheduleReset() {
+  const now = new Date();
+  const hours = now.getHours();
+  let nextReset = new Date(now);
 
-      setInterval(fetchRTP, 12 * 60 * 60 * 1000);
-    }, msUntilNext);
+  if (hours < 12) {
+    nextReset.setHours(12, 0, 0, 0);
+  } else {
+    nextReset.setHours(24, 0, 0, 0);
   }
 
-  fetchRTP();
-  scheduleReset();
+  const msUntilNext = nextReset.getTime() - now.getTime();
+
+  setTimeout(() => {
+    resetRTP(); // Panggil fungsi reset
+    setInterval(resetRTP, 12 * 60 * 60 * 1000);
+  }, msUntilNext);
+}
+
+scheduleReset();
+fetchRTP();
 </script>
 </body>
 </html>
-
