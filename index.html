@@ -505,20 +505,31 @@
 
 async function fetchRTP() {
   console.log("🕒 Memuat data RTP...");
-  const resp = await mockFetch();
-
-  if (resp.ok) {
-    DATA = await resp.json();
-    console.log("Data berhasil dimuat:", DATA);
-    render();
-  } else {
-    console.error("Gagal memuat data.");
+  
+  try {
+    const resp = await mockFetch();
+    console.log("Response dari mockFetch:", resp);
+    
+    if (resp.ok) {
+      DATA = await resp.json();
+      console.log("Data berhasil dimuat:", DATA);
+      render();
+    } else {
+      console.error("Gagal memuat data.");
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
 }
 
 function render() {
   console.log("Rendering data:", DATA);
   const $grid = document.getElementById('grid');
+  if (!DATA || DATA.length === 0) {
+    console.log("Data kosong!");
+    return;
+  }
+
   $grid.innerHTML = DATA.map(d => {
     let color;
     if (d.rtp >= 61) {
@@ -568,3 +579,4 @@ function scheduleReset() {
 </script>
 </body>
 </html>
+
