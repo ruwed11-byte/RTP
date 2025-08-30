@@ -505,12 +505,10 @@
 
 async function fetchRTP() {
   console.log("🕒 Memuat data RTP...");
-
-  const resp = { ok: true, json: () => Promise.resolve(DATA) };
+  const resp = await mockFetch();
 
   if (resp.ok) {
     DATA = await resp.json();
-
     render();
   } else {
     console.error("Gagal memuat data.");
@@ -563,10 +561,12 @@ function scheduleReset() {
   }, msUntilNext);
 }
 
-scheduleReset();
+  fetchRTP();
+  scheduleReset();
 </script>
 </body>
 </html>
+
 
 
 
