@@ -587,15 +587,14 @@
 
     const msUntilNext = nextReset.getTime() - now.getTime();
 
-    setTimeout(() => {
-      fetchRTP();
-
-      setInterval(fetchRTP, 12 * 60 * 60 * 1000);
-    }, msUntilNext);
-  }
-
+setTimeout(() => {
   fetchRTP();
-  scheduleReset();
+  setInterval(fetchRTP, 12 * 60 * 60 * 1000);
+}, msUntilNext);
+}
+	
+	scheduleReset();
+	fetchRTP();
 </script>
 </body>
 </html>
