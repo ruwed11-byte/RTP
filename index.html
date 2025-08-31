@@ -551,7 +551,6 @@ function resetRTP() {
     $status.classList.add('hide');
     $grid.classList.remove('hide');
     $meta.textContent = "Last updated: " + fmtTime(new Date());
-  }
 
     let items = DATA.filter(d => {
       const okName = d.nama.toLowerCase().includes(q);
@@ -597,7 +596,7 @@ function resetRTP() {
       $grid.innerHTML = '';
     }
   }
-
+	
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
@@ -608,3 +607,4 @@ function resetRTP() {
 </script>
 </body>
 </html>
+
