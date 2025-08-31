@@ -188,18 +188,87 @@
   <div id="grid" class="grid hide"></div>
 
 <script>
-  const $grid   = document.getElementById('grid');
-  const $status = document.getElementById('status');
-  const $meta   = document.getElementById('meta');
-  const $search = document.getElementById('search');
-  const $range  = document.getElementById('range');
-  const $prov   = document.getElementById('provider');
-  const $btn    = document.getElementById('refresh');
-  let DATA = [];
+  const $grid = document.querySelector(".grid");
+  const $range = document.querySelector("#range");
+  const $provider = document.querySelector("#provider");
+  const $search = document.querySelector("#search");
+  const $refresh = document.querySelector("#refresh");
+  const $meta = document.querySelector(".meta");
 
-  const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
-    hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
-  }).format(d);
+  let allData = [];
+  let filteredData = []; // hasil filter
+
+  function render(data) {
+    $grid.innerHTML = "";
+    data.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${item.gambar}" alt="${item.nama}" />
+        <div class="info">
+          <div class="name">${item.nama}</div>
+          <div class="provider">${item.provider}</div>
+          <div class="bar">
+            <div class="progress" style="width:${item.rtp}%;"></div>
+          </div>
+          <div class="rtp">${item.rtp}%</div>
+        </div>
+      `;
+      $grid.appendChild(card);
+    });
+  }
+
+  function applyFilter() {
+    let data = [...allData];
+
+    const q = $search.value.toLowerCase();
+    if (q) {
+      data = data.filter((d) => d.nama.toLowerCase().includes(q));
+    }
+
+    const prov = $provider.value;
+    if (prov && prov !== "all") {
+      data = data.filter((d) => d.provider === prov);
+    }
+
+    if ($range.value === "high") {
+      data.sort((a, b) => b.rtp - a.rtp);
+    } else if ($range.value === "low") {
+      data.sort((a, b) => a.rtp - b.rtp);
+    }
+
+    filteredData = data;
+    render(filteredData);
+  }
+
+  function setProviderOptions(data) {
+    const providers = [...new Set(data.map((d) => d.provider))];
+    $provider.innerHTML = `<option value="all">Semua Provider</option>`;
+    providers.forEach((p) => {
+      const opt = document.createElement("option");
+      opt.value = p;
+      opt.textContent = p;
+      $provider.appendChild(opt);
+    });
+  }
+
+  function updateMeta() {
+    const now = new Date();
+    $meta.textContent = "Last updated: " + now.toLocaleString();
+  }
+	
+  async function loadData() {
+    const res = await mockFetch();
+    allData = res.data;
+    setProviderOptions(allData);
+    applyFilter();
+    updateMeta();
+  }
+
+  $search.addEventListener("input", applyFilter);
+  $provider.addEventListener("change", applyFilter);
+  $range.addEventListener("change", applyFilter);
+  $refresh.addEventListener("click", loadData);
 
   function mockFetch(){
     const items = [
@@ -599,3 +668,4 @@
 </script>
 </body>
 </html>
+
