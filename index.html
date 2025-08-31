@@ -188,9 +188,6 @@
   <div id="grid" class="grid hide"></div>
 
 <script>
-  const USE_MOCK  = true;
-  const REFRESH_MS = 5 * 60 * 1000;
-	
   const $grid   = document.getElementById('grid');
   const $status = document.getElementById('status');
   const $meta   = document.getElementById('meta');
@@ -579,10 +576,10 @@
   $btn.addEventListener('click', fetchRTP);
 
 	fetchRTP();
-	setInterval(fetchRTP, REFRESH_MS);
 </script>
 </body>
 </html>
+
 
 
 
