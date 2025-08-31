@@ -552,12 +552,6 @@ function resetRTP() {
     $grid.classList.remove('hide');
     $meta.textContent = "Last updated: " + fmtTime(new Date());
 
-    let items = DATA.filter(d => {
-      const okName = d.nama.toLowerCase().includes(q);
-      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
-      return okName && okProv;
-    });
-
     if(range === 'high'){
       items = items.sort((a,b) => b.rtp - a.rtp);
     } else if(range === 'low'){
@@ -607,4 +601,5 @@ function resetRTP() {
 </script>
 </body>
 </html>
+
 
