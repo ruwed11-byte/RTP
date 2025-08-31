@@ -221,8 +221,8 @@ DATA = await resp.json();
       $status.classList.add('hide');
       $grid.classList.remove('hide');
     }
-      
-  catch(e) {
+  
+} catch(e) {
   console.error(e);
   $status.textContent = 'Gagal memuat data';
 } finally {
@@ -307,4 +307,5 @@ DATA = await resp.json();
 </script>
 </body>
 </html>
+
 
