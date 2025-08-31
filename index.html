@@ -220,14 +220,14 @@ DATA = await resp.json();
       $meta.textContent = 'Last updated: ' + fmtTime(new Date());
       $status.classList.add('hide');
       $grid.classList.remove('hide');
-
-    } catch(e) {
-      console.error(e);
-      $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally {
-      $btn.disabled = false;
     }
-  }
+      
+  catch(e) {
+  console.error(e);
+  $status.textContent = 'Gagal memuat data';
+} finally {
+  $btn.disabled = false;
+}
 
   function render(){
     const q = ($search.value || '').toLowerCase();
@@ -307,3 +307,4 @@ DATA = await resp.json();
 </script>
 </body>
 </html>
+
