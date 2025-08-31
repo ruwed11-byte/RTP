@@ -198,25 +198,34 @@
   let allData = [];
   let filteredData = []; // hasil filter
 
-  function render(data) {
-    $grid.innerHTML = "";
-    data.forEach((item) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${item.gambar}" alt="${item.nama}" />
-        <div class="info">
-          <div class="name">${item.nama}</div>
-          <div class="provider">${item.provider}</div>
-          <div class="bar">
-            <div class="progress" style="width:${item.rtp}%;"></div>
-          </div>
-          <div class="rtp">${item.rtp}%</div>
-        </div>
-      `;
-      $grid.appendChild(card);
-    });
+function render(data) {
+  $grid.innerHTML = "";
+  if (data.length === 0) {
+    document.getElementById("status").textContent = "Tidak ada data ditemukan.";
+    $grid.classList.add("hide");
+    return;
+  } else {
+    document.getElementById("status").classList.add("hide");
+    $grid.classList.remove("hide");
   }
+
+  data.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${item.gambar}" alt="${item.nama}" class="thumb" />
+      <div class="title">${item.nama}</div>
+      <div class="provider">${item.provider}</div>
+      <div class="bar">
+        <span class="fill" style="width:${item.rtp}%; background:${
+          item.rtp >= 80 ? "var(--hi)" : item.rtp >= 60 ? "var(--mid)" : "var(--low)"
+        }"></span>
+        <span class="label">${item.rtp}%</span>
+      </div>
+    `;
+    $grid.appendChild(card);
+  });
+}
 
   function applyFilter() {
     let data = [...allData];
@@ -640,7 +649,6 @@
     }
   }
 
-  [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
   function scheduleReset() {
