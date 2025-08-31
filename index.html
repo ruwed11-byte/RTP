@@ -492,7 +492,29 @@
     ];
     return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
   }
+	function getRandomRTP() {
+  return parseFloat((Math.random() * (97.5 - 20.1) + 20.1).toFixed(1));
+}
 
+function mockFetch(){
+  const lastUpdate = localStorage.getItem('rtp_last_update');
+  const now = Date.now();
+
+  if (!lastUpdate || (now - parseInt(lastUpdate)) > 12*60*60*1000) {
+    DATA = DATA.map(item => ({
+      ...item,
+      rtp: getRandomRTP()
+    }));
+    localStorage.setItem('rtp_last_update', now);
+    localStorage.setItem('rtp_data', JSON.stringify(DATA));
+  } else {
+    const saved = localStorage.getItem('rtp_data');
+    if (saved) DATA = JSON.parse(saved);
+  }
+
+  return Promise.resolve({ ok:true, json:()=>Promise.resolve(DATA) });
+}
+	
   async function fetchRTP(){
     $btn.disabled = true;
     $status.classList.remove('hide');
@@ -578,4 +600,5 @@
 </script>
 </body>
 </html>
+
 
