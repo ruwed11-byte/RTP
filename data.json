@@ -285,4 +285,4 @@
 { nama: 'Land Of The Free', rtp: 59.0, gambar: 'Gambar RTP/Land Of The Free.png', provider: 'No Limit City' },
 { nama: 'Devils Crossroad', rtp: 25.4, gambar: 'Gambar RTP/Devils Crossroad.png', provider: 'No Limit City' },
 { nama: 'Beheaded', rtp: 41.2, gambar: 'Gambar RTP/Beheaded.png', provider: 'No Limit City' },
-    ];
+];
