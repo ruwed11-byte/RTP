@@ -201,7 +201,11 @@
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
     hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
   }).format(d);
-
+	
+  function randomRTP() {
+    return (Math.random() * (97.5 - 20.1) + 20.1).toFixed(1);
+  }
+	
   function mockFetch(){
     const items = [
 	{ nama: 'Sweet Bonanza', rtp: 93.3, gambar: 'Gambar RTP/Sweet Bonanza.png', provider: 'Pragmatic Play' },
@@ -491,7 +495,7 @@
 { nama: 'Devils Crossroad', rtp: 25.4, gambar: 'Gambar RTP/Devils Crossroad.png', provider: 'No Limit City' },
 { nama: 'Beheaded', rtp: 41.2, gambar: 'Gambar RTP/Beheaded.png', provider: 'No Limit City' },
     ];
-    return new Promise(res=>setTimeout(()=>res({ok:true,json:()=>Promise.resolve(items)}), 600));
+	  return items;
   }
 	
   async function fetchRTP(){
@@ -521,11 +525,33 @@
       $btn.disabled = false;
     }
   }
+function resetRTP() {
+    DATA.forEach(item => {
+      item.rtp = parseFloat(randomRTP());
+    });
+    render();
+  }
 
-  function render(){
-    const q = ($search.value || '').toLowerCase();
-    const range = $range.value;
-    const prov = $prov.value;
+  function render() {
+    $grid.innerHTML = "";
+    DATA.forEach(game => {
+      const card = document.createElement('div');
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${game.gambar}" class="thumb">
+        <div class="title">${game.nama}</div>
+        <div class="provider">${game.provider}</div>
+        <div class="bar">
+          <span class="fill" style="width:${game.rtp}%; background:${game.rtp > 80 ? 'var(--hi)' : game.rtp > 50 ? 'var(--mid)' : 'var(--low)'}"></span>
+          <span class="label">${game.rtp}%</span>
+        </div>
+      `;
+      $grid.appendChild(card);
+    });
+    $status.classList.add('hide');
+    $grid.classList.remove('hide');
+    $meta.textContent = "Last updated: " + fmtTime(new Date());
+  }
 
     let items = DATA.filter(d => {
       const okName = d.nama.toLowerCase().includes(q);
@@ -575,11 +601,10 @@
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
-	fetchRTP();
+	  DATA = mockFetch();
+  render();
+  $btn.onclick = () => render();
+  setInterval(resetRTP, 600000);
 </script>
 </body>
 </html>
-
-
-
-
