@@ -574,27 +574,8 @@
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
-  function scheduleReset() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    let nextReset = new Date(now);
-    if (hours < 12) {
-      nextReset.setHours(12, 0, 0, 0);
-    } else {
-      nextReset.setHours(24, 0, 0, 0);
-    }
-
-    const msUntilNext = nextReset.getTime() - now.getTime();
-
-setTimeout(() => {
-  fetchRTP();
-  setInterval(fetchRTP, 12 * 60 * 60 * 1000);
-}, msUntilNext);
-}
-	
-	scheduleReset();
 	fetchRTP();
 </script>
 </body>
 </html>
+
