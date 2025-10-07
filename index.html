@@ -178,7 +178,6 @@
           <span class="dot low" style="margin-left:8px"></span> Rendah
         </div>
 
-        <div class="meta" id="meta">Last updated: –</div>
         <button class="btn" id="refresh">Refresh</button>
       </div>
     </div>
@@ -509,7 +508,6 @@
                         provs.map(p=>`<option value="${p}">${p}</option>`).join('');
 
       render();
-      $meta.textContent = 'Last updated: ' + fmtTime(new Date());
       $status.classList.add('hide');
       $grid.classList.remove('hide');
 
@@ -574,25 +572,36 @@
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
   $btn.addEventListener('click', fetchRTP);
 
-  function scheduleReset() {
-    const now = new Date();
-    const hours = now.getHours();
+function scheduleReset() {
+  const now = new Date();
 
-    let nextReset = new Date(now);
-    if (hours < 12) {
-      nextReset.setHours(12, 0, 0, 0);
-    } else {
-      nextReset.setHours(24, 0, 0, 0);
-    }
-
-    const msUntilNext = nextReset.getTime() - now.getTime();
-
-    setTimeout(() => {
-      fetchRTP();
-
-      setInterval(fetchRTP, 12 * 60 * 60 * 1000);
-    }, msUntilNext);
+  // Tentukan waktu reset berikutnya (12:00 siang atau 00:00 malam)
+  let nextReset = new Date(now);
+  if (now.getHours() < 12) {
+    // Jika sekarang sebelum jam 12 siang → reset di jam 12:00 siang
+    nextReset.setHours(12, 0, 0, 0);
+  } else {
+    // Jika sudah lewat jam 12 siang → reset di jam 00:00 (tengah malam)
+    nextReset.setDate(nextReset.getDate() + 1);
+    nextReset.setHours(0, 0, 0, 0);
   }
+
+  const msUntilNext = nextReset.getTime() - now.getTime();
+
+  console.log('Reset berikutnya pada:', nextReset.toLocaleString());
+
+  // Jalankan fetch pertama kali saat waktu reset tercapai
+  setTimeout(() => {
+    fetchRTP();
+    console.log('Reset otomatis dijalankan:', new Date().toLocaleString());
+
+    // Setelah itu, reset ulang setiap 12 jam (12 siang & 12 malam)
+    setInterval(() => {
+      fetchRTP();
+      console.log('Reset otomatis dijalankan:', new Date().toLocaleString());
+    }, 12 * 60 * 60 * 1000);
+  }, msUntilNext);
+}
 
   fetchRTP();
   scheduleReset();
