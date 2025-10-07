@@ -490,7 +490,6 @@
   }
 
   async function fetchRTP(){
-    $btn.disabled = true;
     $status.classList.remove('hide');
     $grid.classList.add('hide');
     $status.textContent = 'Memuat data…';
@@ -512,7 +511,6 @@
       console.error(e);
       $status.textContent = 'Gagal memuat data. Coba lagi.';
     } finally {
-      $btn.disabled = false;
     }
   }
 
@@ -604,3 +602,4 @@ function scheduleReset() {
 </script>
 </body>
 </html>
+
