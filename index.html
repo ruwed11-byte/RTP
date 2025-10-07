@@ -177,8 +177,6 @@
           <span class="dot mid" style="margin-left:8px"></span> Sedang
           <span class="dot low" style="margin-left:8px"></span> Rendah
         </div>
-
-        <button class="btn" id="refresh">Refresh</button>
       </div>
     </div>
   </header>
@@ -193,7 +191,6 @@
   const $search = document.getElementById('search');
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
-  const $btn    = document.getElementById('refresh');
   let DATA = [];
 
   const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
@@ -570,7 +567,6 @@
   }
 
   [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
-  $btn.addEventListener('click', fetchRTP);
 
 function scheduleReset() {
   const now = new Date();
