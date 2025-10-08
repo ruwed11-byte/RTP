@@ -214,8 +214,15 @@ async function fetchRTP(){
       render();
       $status.classList.add('hide');
       $grid.classList.remove('hide');
+    
+  }  catch(e) {
+      console.error(e);
+      $status.textContent = 'Gagal memuat data. Coba lagi.';
+    } finally {
+      $btn.disabled = false;
+    }
   }
-
+  
   function render(){
     const q = ($search.value || '').toLowerCase();
     const range = $range.value;
@@ -304,4 +311,5 @@ function scheduleReset() {
 </script>
 </body>
 </html>
+
 
