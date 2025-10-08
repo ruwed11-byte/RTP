@@ -203,7 +203,7 @@ async function fetchRTP(){
   $status.textContent = 'Memuat data…';
 
   try {
-    const resp = await fetch('data/game.json?t=' + Date.now());
+    const resp = await fetch('data.json?t=' + Date.now());
     if(!resp.ok) throw new Error('HTTP ' + resp.status);
     DATA = await resp.json();
 
@@ -218,9 +218,7 @@ async function fetchRTP(){
   }  catch(e) {
       console.error(e);
       $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally {
-      $btn.disabled = false;
-    }
+    } finally
   }
   
   function render(){
@@ -311,5 +309,6 @@ function scheduleReset() {
 </script>
 </body>
 </html>
+
 
 
