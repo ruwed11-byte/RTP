@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Auto Reset RTP</title>
+<script>
+async function autoReset() {
+  try {
+    // Jalankan fungsi reset kamu (misalnya memanggil API atau regenerasi data)
+    localStorage.removeItem("RTP_DATA"); // contoh hapus cache lokal
+    console.log("Data direset otomatis:", new Date().toLocaleString());
+  } catch (e) {
+    console.error("Gagal reset:", e);
+  }
+}
+autoReset();
+</script>
+</head>
+<body>
+  <h3>✅ Reset berhasil dijalankan.</h3>
+</body>
+</html>
