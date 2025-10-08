@@ -187,40 +187,44 @@
 <script>
   const $grid   = document.getElementById('grid');
   const $status = document.getElementById('status');
-  const $meta   = document.getElementById('meta');
   const $search = document.getElementById('search');
   const $range  = document.getElementById('range');
   const $prov   = document.getElementById('provider');
   let DATA = [];
 
-  const fmtTime = d => new Intl.DateTimeFormat('id-ID',{
-    hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'short'
+  const fmtTime = d => new Intl.DateTimeFormat('id-ID', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    day: '2-digit', month: 'short'
   }).format(d);
 
-async function fetchRTP(){
-  $status.classList.remove('hide');
-  $grid.classList.add('hide');
-  $status.textContent = 'Memuat data…';
+  // === Fungsi ambil data dari file JSON ===
+  async function fetchRTP(){
+    $status.classList.remove('hide');
+    $grid.classList.add('hide');
+    $status.textContent = 'Memuat data…';
 
-  try {
-    const resp = await fetch('data.json?t=' + Date.now());
-    if(!resp.ok) throw new Error('HTTP ' + resp.status);
-    DATA = await resp.json();
+    try {
+      // Ambil data dari file JSON (gunakan cache busting)
+      const resp = await fetch('data/game.json?t=' + Date.now());
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      DATA = await resp.json();
 
-      const provs = Array.from(new Set(DATA.map(d=>d.provider || 'Lainnya')));
+      // Buat daftar provider unik
+      const provs = Array.from(new Set(DATA.map(d => d.provider || 'Lainnya')));
       $prov.innerHTML = `<option value="all">Semua Provider</option>` +
-                        provs.map(p=>`<option value="${p}">${p}</option>`).join('');
+                        provs.map(p => `<option value="${p}">${p}</option>`).join('');
 
       render();
       $status.classList.add('hide');
       $grid.classList.remove('hide');
-    
-  }  catch(e) {
+
+    } catch(e) {
       console.error(e);
       $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally
+    }
   }
-  
+
+  // === Fungsi tampilkan data ke grid ===
   function render(){
     const q = ($search.value || '').toLowerCase();
     const range = $range.value;
@@ -228,7 +232,7 @@ async function fetchRTP(){
 
     let items = DATA.filter(d => {
       const okName = d.nama.toLowerCase().includes(q);
-      const okProv = prov==='all' || (d.provider||'Lainnya')===prov;
+      const okProv = prov === 'all' || (d.provider || 'Lainnya') === prov;
       return okName && okProv;
     });
 
@@ -239,7 +243,7 @@ async function fetchRTP(){
     }
 
     if(items.length){
-      $grid.innerHTML = items.map(d=>{
+      $grid.innerHTML = items.map(d => {
         let color;
         if (d.rtp >= 61) {
           color = 'var(--hi)';
@@ -251,7 +255,7 @@ async function fetchRTP(){
 
         return `
           <article class="card">
-            <img class="thumb" src="${d.gambar}" alt="${d.nama}" 
+            <img class="thumb" src="${d.gambar}" alt="${d.nama}"
                  onerror="this.onerror=null;this.src='https://via.placeholder.com/200x200?text=No+Image'">
             <div class="title">${d.nama}</div>
             <div class="provider">${d.provider || 'Provider'}</div>
@@ -271,44 +275,36 @@ async function fetchRTP(){
     }
   }
 
-  [$search,$range,$prov].forEach(el=>el.addEventListener('input', render));
+  // === Filter realtime ===
+  [$search, $range, $prov].forEach(el => el.addEventListener('input', render));
 
-function scheduleReset() {
-  const now = new Date();
+  // === Jadwal reset otomatis 12 jam sekali ===
+  function scheduleReset() {
+    const now = new Date();
+    let nextReset = new Date(now);
+    if (now.getHours() < 12) {
+      nextReset.setHours(12, 0, 0, 0);
+    } else {
+      nextReset.setDate(nextReset.getDate() + 1);
+      nextReset.setHours(0, 0, 0, 0);
+    }
 
-  // Tentukan waktu reset berikutnya (12:00 siang atau 00:00 malam)
-  let nextReset = new Date(now);
-  if (now.getHours() < 12) {
-    // Jika sekarang sebelum jam 12 siang → reset di jam 12:00 siang
-    nextReset.setHours(12, 0, 0, 0);
-  } else {
-    // Jika sudah lewat jam 12 siang → reset di jam 00:00 (tengah malam)
-    nextReset.setDate(nextReset.getDate() + 1);
-    nextReset.setHours(0, 0, 0, 0);
-  }
+    const msUntilNext = nextReset.getTime() - now.getTime();
+    console.log('Reset berikutnya pada:', nextReset.toLocaleString());
 
-  const msUntilNext = nextReset.getTime() - now.getTime();
-
-  console.log('Reset berikutnya pada:', nextReset.toLocaleString());
-
-  // Jalankan fetch pertama kali saat waktu reset tercapai
-  setTimeout(() => {
-    fetchRTP();
-    console.log('Reset otomatis dijalankan:', new Date().toLocaleString());
-
-    // Setelah itu, reset ulang setiap 12 jam (12 siang & 12 malam)
-    setInterval(() => {
+    setTimeout(() => {
       fetchRTP();
       console.log('Reset otomatis dijalankan:', new Date().toLocaleString());
-    }, 12 * 60 * 60 * 1000);
-  }, msUntilNext);
-}
+      setInterval(() => {
+        fetchRTP();
+        console.log('Reset otomatis dijalankan:', new Date().toLocaleString());
+      }, 12 * 60 * 60 * 1000);
+    }, msUntilNext);
+  }
 
+  // === Jalankan pertama kali ===
   fetchRTP();
   scheduleReset();
 </script>
 </body>
 </html>
-
-
-
