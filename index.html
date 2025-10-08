@@ -214,11 +214,6 @@ async function fetchRTP(){
       render();
       $status.classList.add('hide');
       $grid.classList.remove('hide');
-
-    } catch(e) {
-      console.error(e);
-      $status.textContent = 'Gagal memuat data. Coba lagi.';
-    } finally
   }
 
   function render(){
@@ -309,3 +304,4 @@ function scheduleReset() {
 </script>
 </body>
 </html>
+
