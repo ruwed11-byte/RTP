@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   const repo = "ruwed11-byte/RTP";
   const filename = "data.json";
